@@ -3,11 +3,11 @@ import { WellPlate as WellPlateClass } from 'well-plates';
 
 import Well from './Well';
 
-interface IWellPlateProps<T = any> {
-  plate: WellPlateClass<T>;
+interface IWellPlateProps {
+  plate: WellPlateClass;
   wellSize?: number;
-  wellClassName?: (plate: WellPlateClass<T>, label: string) => string;
-  wellStyle?: (plate: WellPlateClass<T>, label) => CSSProperties;
+  wellClassName?: (label: string) => string;
+  wellStyle?: (label) => CSSProperties;
   onClick?: (well: string, e: React.MouseEvent) => void;
   onEnter?: (well: string, e: SyntheticEvent) => void;
   onLeave?: (well: string, e: SyntheticEvent) => void;
@@ -64,8 +64,8 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       return (
         <div key={columnLabel} style={wellStyle}>
           <Well
-            className={props.wellClassName && props.wellClassName(plate, label)}
-            style={props.wellStyle && props.wellStyle(plate, label)}
+            className={props.wellClassName && props.wellClassName(label)}
+            style={props.wellStyle && props.wellStyle(label)}
             onClick={props.onClick}
             onEnter={props.onEnter}
             onLeave={props.onLeave}
