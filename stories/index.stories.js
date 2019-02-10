@@ -1,12 +1,15 @@
 import React from 'react';
 import { WellPlate as WellPlateClass } from 'well-plates';
+import { withInfo } from '@storybook/addon-info';
 
+console.log(withInfo);
 import { WellPlate } from '../src/index';
 import { storiesOf } from '@storybook/react';
 
 const wellPlate = new WellPlateClass({ rows: 8, columns: 12 });
 
 storiesOf('Well plate', module)
+  .addDecorator(withInfo)
   .add('Regular size', () => {
     return <WellPlate plate={wellPlate} />;
   })

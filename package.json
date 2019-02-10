@@ -16,7 +16,8 @@
     "prepublishOnly": "npm run build",
     "watch": "tsc -p tsconfig.es.json -w",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy": "npm run build-storybook && gh-pages -d storybook-static"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "@types/react": "^16.8.2",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.5",
+    "gh-pages": "^2.0.1",
     "react": "^16.8.1",
     "react-docgen-typescript-loader": "^3.0.1",
     "react-dom": "^16.8.1",
