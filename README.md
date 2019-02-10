@@ -5,6 +5,8 @@
 
 Render well plates in react.
 
+## [Storybook](https://zakodium.github.io/react-well-plates/)
+
 ## Installation
 
 `$ npm install --save react-well-plates`
