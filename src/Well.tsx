@@ -16,7 +16,8 @@ interface IWellProps {
 
 const wellStyle: CSSProperties = {
   borderRadius: '50%',
-  border: '1px black solid',
+  borderWidth: 1,
+  borderStyle: 'solid',
   display: 'flex',
   alignItems: 'center',
   textAlign: 'center'
