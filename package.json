@@ -4,6 +4,7 @@
   "description": "Render well plates in react",
   "main": "lib/index.js",
   "module": "lib-es6/index.js",
+  "types": "lib-es6/src/index.d.ts",
   "files": [
     "lib",
     "lib-es"
