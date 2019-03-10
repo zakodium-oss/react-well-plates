@@ -44,14 +44,13 @@ const WellPicker: FunctionComponent<IWellPickerProps> = ({
   onSelect,
   style = {
     default: { borderColor: 'black' },
-    disabled: { backgroundColor: 'gray', borderColor: 'black' },
+    disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
     booked: { borderColor: 'orange' },
-    selected: { backgroundColor: 'green' }
+    selected: { backgroundColor: 'lightgreen' }
   },
   className = {},
   multiSelectionMode = MultiSelectionMode.zone
 }) => {
-  console.log(multiSelectionMode);
   const wellPlate = useMemo(() => {
     return new WellPlate({ rows, columns });
   }, [rows, columns]);
@@ -90,7 +89,6 @@ const WellPicker: FunctionComponent<IWellPickerProps> = ({
           throw new Error('invalid multiSelectionMode');
         }
       }
-      console.log('range', range);
       setBooked(new Set(range));
     },
     [multiSelectionMode, wellPlate]
