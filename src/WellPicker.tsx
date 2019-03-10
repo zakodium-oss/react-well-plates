@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useEffect
 } from 'react';
-import { WellPlate, RangeMode } from 'well-plates';
+import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
 import ReactWellPlate from './WellPlate';
 
 export enum MultiSelectionMode {
@@ -18,6 +18,7 @@ export enum MultiSelectionMode {
 export interface IWellPickerProps {
   rows: number;
   columns: number;
+  format?: PositionFormat;
   value: string[];
   disabled?: string[];
   onSelect: (value: string[]) => void;
@@ -36,9 +37,16 @@ export interface IWellPickerProps {
   multiSelectionMode?: MultiSelectionMode;
 }
 
-const WellPicker: FunctionComponent<IWellPickerProps> = ({
+// const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
+
+// }) {
+//     return
+// }
+
+const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   rows,
   columns,
+  format,
   value,
   disabled,
   onSelect,
@@ -52,8 +60,8 @@ const WellPicker: FunctionComponent<IWellPickerProps> = ({
   multiSelectionMode = MultiSelectionMode.zone
 }) => {
   const wellPlate = useMemo(() => {
-    return new WellPlate({ rows, columns });
-  }, [rows, columns]);
+    return new WellPlate({ rows, columns, positionFormat: format });
+  }, [rows, columns, format]);
   const valueSet = useMemo(() => {
     return new Set(value);
   }, [value]);
@@ -221,4 +229,4 @@ const WellPicker: FunctionComponent<IWellPickerProps> = ({
   );
 };
 
-export default WellPicker;
+export default MultiWellPicker;

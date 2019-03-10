@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { WellPlate as WellPlateClass } from 'well-plates';
+import { WellPlate as WellPlateClass, PositionFormat } from 'well-plates';
 import { withInfo } from '@storybook/addon-info';
-import { withKnobs, select } from '@storybook/addon-knobs';
+import { withKnobs, select, number } from '@storybook/addon-knobs';
 
 import { WellPlate, WellPicker, MultiSelectionMode } from '../src/index';
 import { storiesOf } from '@storybook/react';
@@ -51,11 +51,15 @@ storiesOf('Well plate', module)
 storiesOf('Well picker', module)
   .addDecorator(withKnobs)
   .addDecorator(withInfo)
-  .add('Well picker zone selection', () => {
+  .add('Well picker', () => {
     return (
       <StateFullWellPicker
-        rows={8}
-        columns={12}
+        rows={number('Rows', 8)}
+        columns={number('Columns', 12)}
+        format={select('Position format', {
+          'Letter+Number': PositionFormat.LetterNumber,
+          Sequential: PositionFormat.Sequential
+        })}
         value={['D2']}
         disabled={['A5', 'C1']}
         multiSelectionMode={select(
