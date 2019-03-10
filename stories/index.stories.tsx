@@ -11,15 +11,16 @@ const wellPlate = new WellPlateClass<string>({ rows: 8, columns: 12 });
 storiesOf('Well plate', module)
   .addDecorator(withInfo)
   .add('Regular size', () => {
-    return <WellPlate plate={wellPlate} />;
+    return <WellPlate rows={8} columns={12} />;
   })
   .add('Large size', () => {
-    return <WellPlate plate={wellPlate} wellSize={60} />;
+    return <WellPlate rows={8} columns={12} wellSize={60} />;
   })
   .add('Small size', () => {
     return (
       <WellPlate
-        plate={wellPlate}
+        rows={8}
+        columns={12}
         wellSize={30}
         wellStyle={() => ({
           fontSize: 'x-small'
@@ -30,7 +31,8 @@ storiesOf('Well plate', module)
   .add('Custom styles', () => {
     return (
       <WellPlate
-        plate={wellPlate}
+        rows={8}
+        columns={12}
         wellSize={50}
         wellStyle={(label) => {
           const factor = Math.round(

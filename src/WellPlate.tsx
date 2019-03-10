@@ -1,10 +1,14 @@
-import React, { CSSProperties, FunctionComponent, SyntheticEvent } from 'react';
-import { WellPlate as WellPlateClass } from 'well-plates';
+import React, {
+  CSSProperties,
+  FunctionComponent,
+  SyntheticEvent,
+  useMemo
+} from 'react';
+import { WellPlate as WellPlateClass, PositionFormat } from 'well-plates';
 
 import Well from './Well';
 
-interface IWellPlateProps {
-  plate: WellPlateClass;
+interface IWellPlateCommonProps {
   wellSize?: number;
   wellClassName?: (label: string) => string;
   wellStyle?: (label) => CSSProperties;
@@ -15,10 +19,29 @@ interface IWellPlateProps {
   onMouseUp?: (well: string, e: React.MouseEvent) => void;
 }
 
-// type GenericWellPlateComponent<T> = FunctionComponent<IWellPlateProps<T>>;
+interface IWellPlateInternalProps extends IWellPlateCommonProps {
+  plate: WellPlateClass;
+}
+
+interface IWellPlateProps extends IWellPlateCommonProps {
+  rows: number;
+  columns: number;
+  format?: PositionFormat;
+}
 
 const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
-  const { plate, wellSize } = props;
+  const { rows, columns, format, ...otherProps } = props;
+  const plate = useMemo(() => {
+    return new WellPlateClass({ rows, columns, positionFormat: format });
+  }, [rows, columns, format]);
+
+  return <WellPlateInternal plate={plate} {...otherProps} />;
+};
+
+export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
+  props
+) => {
+  const { plate, wellSize = 40 } = props;
 
   const rowLabels = plate.rowLabels;
   const columnLabels = plate.columnLabels;
