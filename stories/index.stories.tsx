@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { WellPlate as WellPlateClass } from 'well-plates';
 import { withInfo } from '@storybook/addon-info';
+import { withKnobs, select } from '@storybook/addon-knobs';
 
-import { WellPlate, WellPicker } from '../src/index';
+import { WellPlate, WellPicker, MultiSelectionMode } from '../src/index';
 import { storiesOf } from '@storybook/react';
 
 const wellPlate = new WellPlateClass<string>({ rows: 8, columns: 12 });
@@ -48,26 +49,24 @@ storiesOf('Well plate', module)
   });
 
 storiesOf('Well picker', module)
+  .addDecorator(withKnobs)
   .addDecorator(withInfo)
-  .add('Well picker', () => {
+  .add('Well picker zone selection', () => {
     return (
       <StateFullWellPicker
         rows={8}
         columns={12}
         value={['D2']}
         disabled={['A5', 'C1']}
-        style={{
-          default: { borderColor: 'black' },
-          disabled: { backgroundColor: 'gray', borderColor: 'black' },
-          booked: { borderColor: 'orange' },
-          selected: { backgroundColor: 'green' }
-        }}
-        className={{
-          default: '',
-          disabled: '',
-          booked: '',
-          selected: ''
-        }}
+        multiSelectionMode={select(
+          'Multi selection mode',
+          {
+            zone: MultiSelectionMode.zone,
+            'By row': MultiSelectionMode.rangeByRow,
+            'By column': MultiSelectionMode.rangeByColumn
+          },
+          MultiSelectionMode.zone
+        )}
       />
     );
   });

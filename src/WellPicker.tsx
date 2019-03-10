@@ -1,16 +1,57 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { WellPlate } from 'well-plates';
+import React, {
+  CSSProperties,
+  FunctionComponent,
+  useMemo,
+  useState,
+  useCallback,
+  useEffect
+} from 'react';
+import { WellPlate, RangeMode } from 'well-plates';
 import ReactWellPlate from './WellPlate';
 
-export default function WellPicker({
+export enum MultiSelectionMode {
+  rangeByRow,
+  rangeByColumn,
+  zone
+}
+
+export interface IWellPickerProps {
+  rows: number;
+  columns: number;
+  value: string[];
+  disabled?: string[];
+  onSelect: (value: string[]) => void;
+  style?: {
+    selected?: CSSProperties;
+    disabled?: CSSProperties;
+    booked?: CSSProperties;
+    default?: CSSProperties;
+  };
+  className?: {
+    selected?: string;
+    disabled?: string;
+    booked?: string;
+    default?: string;
+  };
+  multiSelectionMode?: MultiSelectionMode;
+}
+
+const WellPicker: FunctionComponent<IWellPickerProps> = ({
   rows,
   columns,
   value,
   disabled,
   onSelect,
-  style,
-  className
-}) {
+  style = {
+    default: { borderColor: 'black' },
+    disabled: { backgroundColor: 'gray', borderColor: 'black' },
+    booked: { borderColor: 'orange' },
+    selected: { backgroundColor: 'green' }
+  },
+  className = {},
+  multiSelectionMode = MultiSelectionMode.zone
+}) => {
+  console.log(multiSelectionMode);
   const wellPlate = useMemo(() => {
     return new WellPlate({ rows, columns });
   }, [rows, columns]);
@@ -23,16 +64,37 @@ export default function WellPicker({
   const [startWell, setStartWell] = useState(null);
   const [bookedSet, setBooked] = useState(new Set());
 
-  const selectRange = useCallback((start, end) => {
-    const indexStart = wellPlate.getIndex(start);
-    const indexEnd = wellPlate.getIndex(end);
-    const size = indexEnd - indexStart;
-    const range = wellPlate.getPositionCodeRange(
-      size < 0 ? end : start,
-      size < 0 ? -size + 1 : size + 1
-    );
-    setBooked(new Set(range));
-  }, []);
+  const selectRange = useCallback(
+    (start, end) => {
+      let range;
+      switch (multiSelectionMode) {
+        case MultiSelectionMode.zone: {
+          range = wellPlate.getPositionCodeZone(start, end);
+          break;
+        }
+        case MultiSelectionMode.rangeByRow:
+        case MultiSelectionMode.rangeByColumn: {
+          range = wellPlate.getPositionCodeRange(
+            start,
+            end,
+            multiSelectionMode === MultiSelectionMode.rangeByRow
+              ? RangeMode.byRows
+              : RangeMode.byColumns
+          );
+          break;
+        }
+        case MultiSelectionMode.rangeByColumn: {
+          break;
+        }
+        default: {
+          throw new Error('invalid multiSelectionMode');
+        }
+      }
+      console.log('range', range);
+      setBooked(new Set(range));
+    },
+    [multiSelectionMode, wellPlate]
+  );
 
   const bookSelection = useCallback(
     (toggle) => {
@@ -145,6 +207,7 @@ export default function WellPicker({
         }
       }}
       onMouseDown={(well, event) => {
+        if (disabledSet.has(well)) return;
         setStartWell(well);
         if (!event.shiftKey && !event.ctrlKey) {
           onSelect([]);
@@ -158,4 +221,6 @@ export default function WellPicker({
       }}
     />
   );
-}
+};
+
+export default WellPicker;
