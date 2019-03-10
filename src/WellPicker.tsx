@@ -120,7 +120,7 @@ const WellPicker: FunctionComponent<IWellPickerProps> = ({
       }
       onSelect(newValue);
     },
-    [disabled, bookedSet, onSelect]
+    [bookedSet, onSelect, disabledSet, valueSet]
   );
 
   const toggleWell = useCallback(
@@ -134,7 +134,7 @@ const WellPicker: FunctionComponent<IWellPickerProps> = ({
         onSelect([...valueSet, well]);
       }
     },
-    [valueSet]
+    [valueSet, value, onSelect]
   );
 
   const classNameCallback = useCallback(
