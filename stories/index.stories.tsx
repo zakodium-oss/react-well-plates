@@ -50,31 +50,30 @@ storiesOf('Well plate', module)
 storiesOf('Well picker', module)
   .addDecorator(withInfo)
   .add('Well picker', () => {
-    return <StateFullWellPicker />;
+    return (
+      <StateFullWellPicker
+        rows={8}
+        columns={12}
+        value={['D2']}
+        disabled={['A5', 'C1']}
+        style={{
+          default: { borderColor: 'black' },
+          disabled: { backgroundColor: 'gray', borderColor: 'black' },
+          booked: { borderColor: 'orange' },
+          selected: { backgroundColor: 'green' }
+        }}
+        className={{
+          default: '',
+          disabled: '',
+          booked: '',
+          selected: ''
+        }}
+      />
+    );
   });
 
-function StateFullWellPicker() {
-  const [value, setValue] = useState([]);
-  console.log(value);
-  return (
-    <WellPicker
-      rows={12}
-      columns={8}
-      value={value}
-      disabled={['A5', 'C1']}
-      onSelect={setValue}
-      style={{
-        default: { borderColor: 'black' },
-        disabled: { backgroundColor: 'gray', borderColor: 'black' },
-        booked: { borderColor: 'orange' },
-        selected: { backgroundColor: 'green' }
-      }}
-      className={{
-        default: '',
-        disabled: '',
-        booked: '',
-        selected: ''
-      }}
-    />
-  );
+function StateFullWellPicker(props) {
+  const { value: initialValue, ...otherProps } = props;
+  const [value, setValue] = useState(initialValue);
+  return <WellPicker value={value} onSelect={setValue} {...otherProps} />;
 }
