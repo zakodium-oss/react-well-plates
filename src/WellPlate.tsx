@@ -58,9 +58,9 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     </div>
   ));
 
-  const rows = rowLabels.map((rowLabel) => {
-    const columns = columnLabels.map((columnLabel) => {
-      const label = rowLabel + columnLabel;
+  const rows = rowLabels.map((rowLabel, rowIdx) => {
+    const columns = columnLabels.map((columnLabel, columnIdx) => {
+      const label = plate.getPositionCode({ row: rowIdx, column: columnIdx });
       return (
         <div key={columnLabel} style={wellStyle}>
           <Well
