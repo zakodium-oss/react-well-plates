@@ -18,7 +18,9 @@
     "watch": "tsc -p tsconfig.es.json -w",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy": "npm run build-storybook && gh-pages -d storybook-static"
+    "deploy": "npm run build-storybook && gh-pages -d storybook-static",
+    "eslint": "eslint --ext ts,tsx src",
+    "eslint-fix": "npm run eslint -- --fix"
   },
   "repository": {
     "type": "git",
