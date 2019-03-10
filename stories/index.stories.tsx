@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { WellPlate as WellPlateClass } from 'well-plates';
 import { withInfo } from '@storybook/addon-info';
 
-import { WellPlate } from '../src/index';
+import { WellPlate, WellPicker } from '../src/index';
 import { storiesOf } from '@storybook/react';
 
 const wellPlate = new WellPlateClass<string>({ rows: 8, columns: 12 });
@@ -46,3 +46,35 @@ storiesOf('Well plate', module)
       />
     );
   });
+
+storiesOf('Well picker', module)
+  .addDecorator(withInfo)
+  .add('Well picker', () => {
+    return <StateFullWellPicker />;
+  });
+
+function StateFullWellPicker() {
+  const [value, setValue] = useState([]);
+  console.log(value);
+  return (
+    <WellPicker
+      rows={12}
+      columns={8}
+      value={value}
+      disabled={['A5', 'C1']}
+      onSelect={setValue}
+      style={{
+        default: { borderColor: 'black' },
+        disabled: { backgroundColor: 'gray', borderColor: 'black' },
+        booked: { borderColor: 'orange' },
+        selected: { backgroundColor: 'green' }
+      }}
+      className={{
+        default: '',
+        disabled: '',
+        booked: '',
+        selected: ''
+      }}
+    />
+  );
+}
