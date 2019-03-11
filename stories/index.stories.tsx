@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { WellPlate as WellPlateClass, PositionFormat } from 'well-plates';
+import { PositionFormat } from 'well-plates';
 import { withInfo } from '@storybook/addon-info';
 import { withKnobs, select, number } from '@storybook/addon-knobs';
 
 import { WellPlate, WellPicker, MultiSelectionMode } from '../src/index';
 import { storiesOf } from '@storybook/react';
-
-const wellPlate = new WellPlateClass<string>({ rows: 8, columns: 12 });
 
 storiesOf('Well plate', module)
   .addDecorator(withInfo)
@@ -34,7 +32,7 @@ storiesOf('Well plate', module)
         rows={8}
         columns={12}
         wellSize={50}
-        wellStyle={(label) => {
+        wellStyle={(label, wellPlate) => {
           const factor = Math.round(
             (wellPlate.getIndex(label) / (wellPlate.rows * wellPlate.columns)) *
               120 +
