@@ -53,10 +53,10 @@ storiesOf('Well plate', module)
     );
   });
 
-storiesOf('Multi well picker', module)
+storiesOf('Well picker', module)
   .addDecorator(withKnobs)
   .addDecorator(withInfo)
-  .add('Well picker', () => {
+  .add('Multi well picker', () => {
     return (
       <StateFullWellPicker
         rows={number('Rows', 8)}
