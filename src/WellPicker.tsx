@@ -22,7 +22,7 @@ export interface IWellPickerProps {
   format?: PositionFormat;
   value: string[];
   disabled?: string[];
-  onSelect: (value: string[]) => void;
+  onChange: (value: string[]) => void;
   style?: {
     selected?: CSSProperties;
     disabled?: CSSProperties;
@@ -50,7 +50,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   format,
   value,
   disabled,
-  onSelect,
+  onChange,
   style = {
     default: { borderColor: 'black' },
     disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
@@ -128,9 +128,9 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           }
         }
       }
-      onSelect(newValue);
+      onChange(newValue);
     },
-    [bookedSet, onSelect, disabledSet, valueSet]
+    [bookedSet, onChange, disabledSet, valueSet]
   );
 
   const toggleWell = useCallback(
@@ -139,12 +139,12 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         const index = value.findIndex((val) => val === well);
         const newValue = Array.from(valueSet);
         newValue.splice(index, 1);
-        onSelect(newValue);
+        onChange(newValue);
       } else {
-        onSelect([...valueSet, well]);
+        onChange([...valueSet, well]);
       }
     },
-    [valueSet, value, onSelect]
+    [valueSet, value, onChange]
   );
 
   const classNameCallback = useCallback(
@@ -219,7 +219,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         if (disabledSet.has(well)) return;
         setStartWell(well);
         if (!event.shiftKey && !event.ctrlKey) {
-          onSelect([]);
+          onChange([]);
         }
       }}
       onClick={(well, e) => {

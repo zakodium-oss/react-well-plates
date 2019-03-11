@@ -78,5 +78,5 @@ storiesOf('Well picker', module)
 function StateFullWellPicker(props) {
   const { value: initialValue, ...otherProps } = props;
   const [value, setValue] = useState(initialValue);
-  return <WellPicker value={value} onSelect={setValue} {...otherProps} />;
+  return <WellPicker value={value} onChange={setValue} {...otherProps} />;
 }
