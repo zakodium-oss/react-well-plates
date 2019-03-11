@@ -3,7 +3,12 @@ import { PositionFormat } from 'well-plates';
 import { withInfo } from '@storybook/addon-info';
 import { withKnobs, select, number } from '@storybook/addon-knobs';
 
-import { WellPlate, WellPicker, MultiSelectionMode } from '../src/index';
+import {
+  SingleWellPicker,
+  WellPlate,
+  MultiWellPicker,
+  MultiSelectionMode
+} from '../src/index';
 import { storiesOf } from '@storybook/react';
 
 storiesOf('Well plate', module)
@@ -48,7 +53,7 @@ storiesOf('Well plate', module)
     );
   });
 
-storiesOf('Well picker', module)
+storiesOf('Multi well picker', module)
   .addDecorator(withKnobs)
   .addDecorator(withInfo)
   .add('Well picker', () => {
@@ -73,10 +78,30 @@ storiesOf('Well picker', module)
         )}
       />
     );
+  })
+  .add('Single well picker', () => {
+    return (
+      <StateFullSingleWellPicker
+        rows={number('Rows', 8)}
+        columns={number('Columns', 12)}
+        format={select('Position format', {
+          'Letter+Number': PositionFormat.LetterNumber,
+          Sequential: PositionFormat.Sequential
+        })}
+        value="D2"
+        disabled={['E5', 'C3']}
+      />
+    );
   });
 
 function StateFullWellPicker(props) {
   const { value: initialValue, ...otherProps } = props;
   const [value, setValue] = useState(initialValue);
-  return <WellPicker value={value} onChange={setValue} {...otherProps} />;
+  return <MultiWellPicker value={value} onChange={setValue} {...otherProps} />;
+}
+
+function StateFullSingleWellPicker(props) {
+  const { value: initialValue, ...otherProps } = props;
+  const [value, setValue] = useState(initialValue);
+  return <SingleWellPicker value={value} onChange={setValue} {...otherProps} />;
 }

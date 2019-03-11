@@ -15,7 +15,13 @@ export enum MultiSelectionMode {
   zone
 }
 
-export interface IWellPickerProps {
+const defaultWellPickerStyle = {
+  default: { borderColor: 'black' },
+  disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
+  booked: { borderColor: 'orange' },
+  selected: { backgroundColor: 'lightgreen' }
+};
+export interface IMultiWellPickerProps {
   wellSize?: number;
   rows: number;
   columns: number;
@@ -38,25 +44,101 @@ export interface IWellPickerProps {
   multiSelectionMode?: MultiSelectionMode;
 }
 
-// const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
+export interface ISingleWellPickerProps {
+  wellSize?: number;
+  rows: number;
+  columns: number;
+  format?: PositionFormat;
+  value: string[];
+  disabled?: string[];
+  onChange: (value: string[]) => void;
+  style?: {
+    selected?: CSSProperties;
+    disabled?: CSSProperties;
+    default?: CSSProperties;
+  };
+  className?: {
+    selected?: string;
+    disabled?: string;
+    default?: string;
+  };
+}
 
-// }) {
-//     return
-// }
-
-const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
+export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
+  wellSize,
   rows,
   columns,
   format,
   value,
-  disabled,
+  disabled = [],
   onChange,
-  style = {
-    default: { borderColor: 'black' },
-    disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
-    booked: { borderColor: 'orange' },
-    selected: { backgroundColor: 'lightgreen' }
-  },
+  style = defaultWellPickerStyle,
+  className = {}
+}) => {
+  const wellPlate = useMemo(() => {
+    return new WellPlate({ rows, columns, positionFormat: format });
+  }, [rows, columns, format]);
+
+  const disabledSet = useMemo(() => {
+    return new Set(disabled);
+  }, [disabled]);
+
+  const classNameCallback = useCallback(
+    (label) => {
+      if (disabledSet.has(label)) {
+        return className.disabled;
+      } else if (value === label) {
+        return className.selected;
+      } else {
+        return className.default;
+      }
+    },
+    [value, disabledSet, className]
+  );
+
+  const styleCallback = useCallback(
+    (label) => {
+      if (disabledSet.has(label)) {
+        return style.disabled;
+      } else if (value === label) {
+        return style.selected;
+      } else {
+        return style.default;
+      }
+    },
+    [value, disabledSet, style]
+  );
+
+  const toggleWell = useCallback(
+    (well) => {
+      if (well === value) {
+        onChange(null);
+      } else {
+        onChange(well);
+      }
+    },
+    [value, onChange]
+  );
+
+  return (
+    <WellPlateInternal
+      wellSize={wellSize}
+      plate={wellPlate}
+      wellStyle={styleCallback}
+      wellClassName={classNameCallback}
+      onClick={toggleWell}
+    />
+  );
+};
+
+const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
+  rows,
+  columns,
+  format,
+  value,
+  disabled = [],
+  onChange,
+  style = defaultWellPickerStyle,
   className = {},
   multiSelectionMode = MultiSelectionMode.zone,
   ...wellPlateProps
@@ -149,12 +231,12 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
 
   const classNameCallback = useCallback(
     (label) => {
-      if (valueSet.has(label)) {
-        return className.selected;
-      } else if (disabledSet.has(label)) {
+      if (disabledSet.has(label)) {
         return className.disabled;
       } else if (bookedSet.has(label)) {
         return className.booked;
+      } else if (valueSet.has(label)) {
+        return className.selected;
       } else {
         return className.default;
       }

@@ -1,12 +1,16 @@
 import WellPlate from './WellPlate';
 import MultiWellPicker, {
-  IWellPickerProps,
-  MultiSelectionMode
+  IMultiWellPickerProps,
+  ISingleWellPickerProps,
+  MultiSelectionMode,
+  SingleWellPicker
 } from './WellPicker';
 
 export {
   WellPlate,
-  MultiWellPicker as WellPicker,
-  IWellPickerProps,
+  MultiWellPicker,
+  IMultiWellPickerProps,
+  SingleWellPicker,
+  ISingleWellPickerProps,
   MultiSelectionMode
 };
