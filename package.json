@@ -2,12 +2,12 @@
   "name": "react-well-plates",
   "version": "0.2.0",
   "description": "Render well plates in react",
-  "main": "lib/index.js",
-  "module": "lib-es6/index.js",
+  "main": "lib/src/index.js",
+  "module": "lib-es6/src/index.js",
   "types": "lib-es6/src/index.d.ts",
   "files": [
-    "lib",
-    "lib-es"
+    "lib/src",
+    "lib-es/src"
   ],
   "scripts": {
     "build": "npm run clean && npm run build:ts",
