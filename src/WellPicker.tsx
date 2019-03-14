@@ -113,11 +113,13 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
     (well) => {
       if (well === value) {
         onChange(null);
+      } else if (disabledSet.has(well)) {
+        return;
       } else {
         onChange(well);
       }
     },
-    [value, onChange]
+    [value, onChange, disabledSet]
   );
 
   return (
@@ -222,11 +224,13 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
         const newValue = Array.from(valueSet);
         newValue.splice(index, 1);
         onChange(newValue);
+      } else if (disabledSet.has(well)) {
+        return;
       } else {
         onChange([...valueSet, well]);
       }
     },
-    [valueSet, value, onChange]
+    [valueSet, value, onChange, disabledSet]
   );
 
   const classNameCallback = useCallback(
@@ -301,7 +305,11 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
         if (disabledSet.has(well)) return;
         setStartWell(well);
         if (!event.shiftKey && !event.ctrlKey) {
-          onChange([well]);
+          if (!disabledSet.has(well)) {
+            onChange([well]);
+          } else {
+            onChange([]);
+          }
         }
       }}
       onClick={(well, e) => {
