@@ -301,12 +301,12 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
         if (disabledSet.has(well)) return;
         setStartWell(well);
         if (!event.shiftKey && !event.ctrlKey) {
-          onChange([]);
+          onChange([well]);
         }
       }}
       onClick={(well, e) => {
-        toggleWell(well);
         if (e.shiftKey || e.ctrlKey) {
+          toggleWell(well);
           e.stopPropagation();
         }
       }}
