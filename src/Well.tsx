@@ -1,6 +1,5 @@
 import React from 'react';
 import { CSSProperties, FunctionComponent, SyntheticEvent } from 'react';
-import classNames from 'classnames';
 
 interface IWellProps {
   size: number;
@@ -27,9 +26,6 @@ const Well: FunctionComponent<IWellProps> = (props) => {
   const { value, size, style: customStyles } = props;
 
   const wellMargin = Math.round(size / 12);
-  const cssClasses = {
-    'cursor-pointer': !!props.onClick
-  };
   const style = {
     ...wellStyle,
     width: size - 2 * wellMargin,
@@ -47,7 +43,7 @@ const Well: FunctionComponent<IWellProps> = (props) => {
       onMouseDown={
         props.onMouseDown && ((e) => props.onMouseDown(props.value, e))
       }
-      className={classNames(props.className, cssClasses)}
+      className={props.className}
       style={style}
     >
       <div style={{ width: '100%' }}>{value}</div>
