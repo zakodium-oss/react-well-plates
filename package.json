@@ -1,6 +1,6 @@
 {
   "name": "react-well-plates",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Render well plates in react",
   "main": "lib/src/index.js",
   "module": "lib-es6/src/index.js",
