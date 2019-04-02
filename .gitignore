@@ -2,3 +2,4 @@ node_modules
 lib/
 lib-es/
 storybook-static/
+package-lock.json
