@@ -79,6 +79,48 @@ storiesOf('Well picker', module)
       />
     );
   })
+  .add('Multi well picker with custom styles', () => {
+    return (
+      <StateFullWellPicker
+        rows={number('Rows', 8)}
+        columns={number('Columns', 12)}
+        format={select('Position format', {
+          'Letter+Number': PositionFormat.LetterNumber,
+          Sequential: PositionFormat.Sequential
+        })}
+        value={['D2']}
+        disabled={['A5', 'C1']}
+        multiSelectionMode={select(
+          'Multi selection mode',
+          {
+            zone: MultiSelectionMode.zone,
+            'By row': MultiSelectionMode.rangeByRow,
+            'By column': MultiSelectionMode.rangeByColumn
+          },
+          MultiSelectionMode.zone
+        )}
+        style={{
+          disabled: (label, wellPlate) => {
+            if (label.startsWith('A')) {
+              return {
+                backgroundColor: 'grey'
+              };
+            } else {
+              return {
+                backgroundColor: 'lightgrey'
+              };
+            }
+          },
+          selected: {
+            backgroundColor: 'pink'
+          },
+          booked: {
+            borderColor: 'red'
+          }
+        }}
+      />
+    );
+  })
   .add('Single well picker', () => {
     return (
       <StateFullSingleWellPicker

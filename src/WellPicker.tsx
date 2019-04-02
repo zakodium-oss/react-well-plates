@@ -15,6 +15,14 @@ export enum MultiSelectionMode {
   zone
 }
 
+type ClassNameParam =
+  | ((label: string, wellPlate: WellPlate) => string)
+  | string;
+
+type StyleParam =
+  | ((label: string, wellPlate: WellPlate) => CSSProperties)
+  | CSSProperties;
+
 const defaultWellPickerStyle = {
   default: { borderColor: 'black' },
   disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
@@ -30,16 +38,16 @@ export interface IMultiWellPickerProps {
   disabled?: string[];
   onChange: (value: string[]) => void;
   style?: {
-    selected?: CSSProperties;
-    disabled?: CSSProperties;
-    booked?: CSSProperties;
-    default?: CSSProperties;
+    selected?: StyleParam;
+    disabled?: StyleParam;
+    booked?: StyleParam;
+    default?: StyleParam;
   };
   className?: {
-    selected?: string;
-    disabled?: string;
-    booked?: string;
-    default?: string;
+    selected?: ClassNameParam;
+    disabled?: ClassNameParam;
+    booked?: ClassNameParam;
+    default?: ClassNameParam;
   };
   multiSelectionMode?: MultiSelectionMode;
 }
@@ -53,14 +61,14 @@ export interface ISingleWellPickerProps {
   disabled?: string[];
   onChange: (value: string[]) => void;
   style?: {
-    selected?: CSSProperties;
-    disabled?: CSSProperties;
-    default?: CSSProperties;
+    selected?: StyleParam;
+    disabled?: StyleParam;
+    default?: StyleParam;
   };
   className?: {
-    selected?: string;
-    disabled?: string;
-    default?: string;
+    selected?: ClassNameParam;
+    disabled?: ClassNameParam;
+    default?: ClassNameParam;
   };
 }
 
@@ -75,6 +83,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   style = defaultWellPickerStyle,
   className = {}
 }) => {
+  style = Object.assign({}, defaultWellPickerStyle, style);
   const wellPlate = useMemo(() => {
     return new WellPlate({ rows, columns, positionFormat: format });
   }, [rows, columns, format]);
@@ -86,27 +95,41 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   const classNameCallback = useCallback(
     (label) => {
       if (disabledSet.has(label)) {
-        return className.disabled;
+        return getOrCallClassName(className.disabled, label, wellPlate);
       } else if (value === label) {
-        return className.selected;
+        return getOrCallClassName(className.selected, label, wellPlate);
       } else {
-        return className.default;
+        return getOrCallClassName(className.default, label, wellPlate);
       }
     },
-    [value, disabledSet, className]
+    [
+      value,
+      disabledSet,
+      className.disabled,
+      className.selected,
+      className.default,
+      wellPlate
+    ]
   );
 
   const styleCallback = useCallback(
     (label) => {
       if (disabledSet.has(label)) {
-        return style.disabled;
+        return getOrCallStyle(style.disabled, label, wellPlate);
       } else if (value === label) {
-        return style.selected;
+        return getOrCallStyle(style.selected, label, wellPlate);
       } else {
-        return style.default;
+        return getOrCallStyle(style.default, label, wellPlate);
       }
     },
-    [value, disabledSet, style]
+    [
+      disabledSet,
+      value,
+      style.disabled,
+      style.selected,
+      style.default,
+      wellPlate
+    ]
   );
 
   const toggleWell = useCallback(
@@ -133,6 +156,28 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   );
 };
 
+function getOrCallClassName(
+  fnOrObj: ClassNameParam,
+  label: string,
+  wellPlate: WellPlate
+): string {
+  if (typeof fnOrObj === 'function') {
+    return fnOrObj(label, wellPlate);
+  }
+  return fnOrObj;
+}
+
+function getOrCallStyle(
+  fnOrObj: StyleParam,
+  label: string,
+  wellPlate: WellPlate
+): CSSProperties {
+  if (typeof fnOrObj === 'function') {
+    return fnOrObj(label, wellPlate);
+  }
+  return fnOrObj;
+}
+
 const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
   rows,
   columns,
@@ -145,6 +190,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
   multiSelectionMode = MultiSelectionMode.zone,
   ...wellPlateProps
 }) => {
+  style = Object.assign({}, defaultWellPickerStyle, style);
   const wellPlate = useMemo(() => {
     return new WellPlate({ rows, columns, positionFormat: format });
   }, [rows, columns, format]);
@@ -236,31 +282,49 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
   const classNameCallback = useCallback(
     (label) => {
       if (disabledSet.has(label)) {
-        return className.disabled;
+        return getOrCallClassName(className.disabled, label, wellPlate);
       } else if (bookedSet.has(label)) {
-        return className.booked;
+        return getOrCallClassName(className.booked, label, wellPlate);
       } else if (valueSet.has(label)) {
-        return className.selected;
+        return getOrCallClassName(className.selected, label, wellPlate);
       } else {
-        return className.default;
+        return getOrCallClassName(className.default, label, wellPlate);
       }
     },
-    [valueSet, bookedSet, disabledSet, className]
+    [
+      valueSet,
+      bookedSet,
+      disabledSet,
+      className.disabled,
+      className.booked,
+      className.selected,
+      className.default,
+      wellPlate
+    ]
   );
 
   const styleCallback = useCallback(
     (label) => {
       if (disabledSet.has(label)) {
-        return style.disabled;
+        return getOrCallStyle(style.disabled, label, wellPlate);
       } else if (bookedSet.has(label)) {
-        return style.booked;
+        return getOrCallStyle(style.booked, label, wellPlate);
       } else if (valueSet.has(label)) {
-        return style.selected;
+        return getOrCallStyle(style.selected, label, wellPlate);
       } else {
-        return style.default;
+        return getOrCallStyle(style.default, label, wellPlate);
       }
     },
-    [valueSet, bookedSet, disabledSet, style]
+    [
+      disabledSet,
+      bookedSet,
+      valueSet,
+      style.disabled,
+      style.booked,
+      style.selected,
+      style.default,
+      wellPlate
+    ]
   );
 
   const clear = useCallback(
