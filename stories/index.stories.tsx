@@ -31,12 +31,18 @@ storiesOf('Well plate', module)
       />
     );
   })
-  .add('Custom styles', () => {
+  .add('Custom styles and text', () => {
     return (
       <WellPlate
         rows={8}
         columns={12}
         wellSize={50}
+        text={(label) => (
+          <div style={{ fontSize: 12 }}>
+            <div>test</div>
+            <div>{label}</div>
+          </div>
+        )}
         wellStyle={(label, wellPlate) => {
           const factor = Math.round(
             (wellPlate.getIndex(label) / (wellPlate.rows * wellPlate.columns)) *

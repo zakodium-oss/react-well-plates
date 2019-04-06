@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { CSSProperties, FunctionComponent, SyntheticEvent } from 'react';
 
 interface IWellProps {
   size: number;
   value?: string;
+  text?: ReactNode;
   onClick?: (label: string, e: React.MouseEvent) => void;
   onEnter?: (label: string, e: SyntheticEvent) => void;
   onLeave?: (label: string, e: SyntheticEvent) => void;
@@ -23,7 +24,7 @@ const wellStyle: CSSProperties = {
 };
 
 const Well: FunctionComponent<IWellProps> = (props) => {
-  const { value, size, style: customStyles } = props;
+  const { size, style: customStyles } = props;
 
   const wellMargin = Math.round(size / 12);
   const style = {
@@ -46,7 +47,7 @@ const Well: FunctionComponent<IWellProps> = (props) => {
       className={props.className}
       style={style}
     >
-      <div style={{ width: '100%' }}>{value}</div>
+      <div style={{ width: '100%' }}>{props.text}</div>
     </div>
   );
 };

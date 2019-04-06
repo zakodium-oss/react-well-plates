@@ -3,7 +3,8 @@ import React, {
   FunctionComponent,
   SyntheticEvent,
   useMemo,
-  useCallback
+  useCallback,
+  ReactNode
 } from 'react';
 import { WellPlate as WellPlateClass, PositionFormat } from 'well-plates';
 
@@ -16,7 +17,8 @@ interface IWellPlateCommonProps {
 interface IWellPlateInternalProps extends IWellPlateCommonProps {
   plate: WellPlateClass;
   wellClassName?: (label: string) => string;
-  wellStyle?: (label) => CSSProperties;
+  wellStyle?: (label: string) => CSSProperties;
+  text?: (label: string) => ReactNode;
   onClick?: (well: string, e: React.MouseEvent) => void;
   onEnter?: (well: string, e: SyntheticEvent) => void;
   onLeave?: (well: string, e: SyntheticEvent) => void;
@@ -29,6 +31,7 @@ interface IWellPlateProps extends IWellPlateCommonProps {
   columns: number;
   format?: PositionFormat;
   wellClassName?: (label: string, wellPlate: WellPlateClass) => string;
+  text?: (label: string, wellPlate: WellPlateClass) => ReactNode;
   wellStyle?: (label, wellPlate: WellPlateClass) => CSSProperties;
   onClick?: (
     well: string,
@@ -69,6 +72,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     onEnter,
     wellStyle,
     wellClassName,
+    text,
     ...otherProps
   } = props;
   const plate = useMemo(() => {
@@ -124,10 +128,19 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     [wellClassName, plate]
   );
 
+  const textCallback = useCallback(
+    (label) => {
+      if (text) return text(label, plate);
+      return label;
+    },
+    [text, plate]
+  );
+
   return (
     <WellPlateInternal
       plate={plate}
       onClick={onClickCallback}
+      text={textCallback}
       onMouseDown={onMouseDownCallback}
       onLeave={onLeaveCallback}
       onEnter={onEnterCallback}
@@ -194,6 +207,7 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
             onLeave={props.onLeave}
             onMouseDown={props.onMouseDown}
             onMouseUp={props.onMouseUp}
+            text={props.text(label)}
             value={label}
             size={wellSize}
           />
