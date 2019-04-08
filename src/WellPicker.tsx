@@ -4,7 +4,8 @@ import React, {
   useMemo,
   useState,
   useCallback,
-  useEffect
+  useEffect,
+  ReactNode
 } from 'react';
 import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
 import { WellPlateInternal } from './WellPlate';
@@ -49,6 +50,7 @@ export interface IMultiWellPickerProps {
     booked?: ClassNameParam;
     default?: ClassNameParam;
   };
+  text?: (label: string, wellPlate: WellPlate) => ReactNode;
   multiSelectionMode?: MultiSelectionMode;
 }
 
@@ -58,6 +60,7 @@ export interface ISingleWellPickerProps {
   columns: number;
   format?: PositionFormat;
   value: string[];
+  text?: (label: string, wellPlate: WellPlate) => ReactNode;
   disabled?: string[];
   onChange: (value: string[]) => void;
   style?: {
@@ -78,6 +81,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   columns,
   format,
   value,
+  text,
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
@@ -91,6 +95,14 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   const disabledSet = useMemo(() => {
     return new Set(disabled);
   }, [disabled]);
+
+  const textCallback = useCallback(
+    (label: string) => {
+      if (text) return text(label, wellPlate);
+      return label;
+    },
+    [text, wellPlate]
+  );
 
   const classNameCallback = useCallback(
     (label) => {
@@ -152,6 +164,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
       wellStyle={styleCallback}
       wellClassName={classNameCallback}
       onClick={toggleWell}
+      text={textCallback}
     />
   );
 };
@@ -183,6 +196,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
   columns,
   format,
   value,
+  text,
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
@@ -303,6 +317,14 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
     ]
   );
 
+  const textCallback = useCallback(
+    (label: string) => {
+      if (text) return text(label, wellPlate);
+      return label;
+    },
+    [text, wellPlate]
+  );
+
   const styleCallback = useCallback(
     (label) => {
       if (disabledSet.has(label)) {
@@ -355,6 +377,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       plate={wellPlate}
       wellStyle={styleCallback}
       wellClassName={classNameCallback}
+      text={textCallback}
       onEnter={(well) => {
         if (startWell) {
           selectRange(startWell, well);

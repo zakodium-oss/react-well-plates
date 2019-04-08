@@ -85,7 +85,7 @@ storiesOf('Well picker', module)
       />
     );
   })
-  .add('Multi well picker with custom styles', () => {
+  .add('Multi well picker with custom styles and text', () => {
     return (
       <StateFullWellPicker
         rows={number('Rows', 8)}
@@ -94,6 +94,15 @@ storiesOf('Well picker', module)
           'Letter+Number': PositionFormat.LetterNumber,
           Sequential: PositionFormat.Sequential
         })}
+        wellSize={50}
+        text={(label, wellPlate) => {
+          return (
+            <div style={{ fontSize: 12 }}>
+              <div>{label}</div>
+              <div>{wellPlate.getIndex(label)}</div>
+            </div>
+          );
+        }}
         value={['D2']}
         disabled={['A5', 'C1']}
         multiSelectionMode={select(
