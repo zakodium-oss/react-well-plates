@@ -3,8 +3,8 @@
   "version": "1.1.1",
   "description": "Render well plates in react",
   "main": "lib/src/index.js",
-  "module": "lib-es6/src/index.js",
-  "types": "lib-es6/src/index.d.ts",
+  "module": "lib-es/src/index.js",
+  "types": "lib-es/src/index.d.ts",
   "files": [
     "lib/src",
     "lib-es/src"
