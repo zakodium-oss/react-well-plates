@@ -5,7 +5,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
-  ReactNode
+  ReactNode,
 } from 'react';
 import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
 import { WellPlateInternal } from './WellPlate';
@@ -13,7 +13,7 @@ import { WellPlateInternal } from './WellPlate';
 export enum MultiSelectionMode {
   rangeByRow,
   rangeByColumn,
-  zone
+  zone,
 }
 
 type ClassNameParam =
@@ -28,7 +28,7 @@ const defaultWellPickerStyle = {
   default: { borderColor: 'black' },
   disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
   booked: { borderColor: 'orange' },
-  selected: { backgroundColor: 'lightgreen' }
+  selected: { backgroundColor: 'lightgreen' },
 };
 export interface IMultiWellPickerProps {
   wellSize?: number;
@@ -85,7 +85,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
-  className = {}
+  className = {},
 }) => {
   style = Object.assign({}, defaultWellPickerStyle, style);
   const wellPlate = useMemo(() => {
@@ -120,7 +120,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
       className.disabled,
       className.selected,
       className.default,
-      wellPlate
+      wellPlate,
     ]
   );
 
@@ -140,7 +140,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
       style.disabled,
       style.selected,
       style.default,
-      wellPlate
+      wellPlate,
     ]
   );
 
@@ -215,11 +215,11 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
     return new Set(disabled);
   }, [disabled]);
   const [startWell, setStartWell] = useState(null);
-  const [bookedSet, setBooked] = useState(new Set());
+  const [bookedSet, setBooked] = useState(new Set<string>());
 
   const selectRange = useCallback(
     (start, end) => {
-      let range;
+      let range: string[];
       switch (multiSelectionMode) {
         case MultiSelectionMode.zone: {
           range = wellPlate.getPositionCodeZone(start, end);
@@ -313,7 +313,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       className.booked,
       className.selected,
       className.default,
-      wellPlate
+      wellPlate,
     ]
   );
 
@@ -345,7 +345,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       style.booked,
       style.selected,
       style.default,
-      wellPlate
+      wellPlate,
     ]
   );
 
