@@ -7,7 +7,9 @@ import {
   SingleWellPicker,
   WellPlate,
   MultiWellPicker,
-  MultiSelectionMode
+  MultiSelectionMode,
+  IMultiWellPickerProps,
+  ISingleWellPickerProps
 } from '../src/index';
 import { storiesOf } from '@storybook/react';
 
@@ -67,12 +69,17 @@ storiesOf('Well picker', module)
       <StateFullWellPicker
         rows={number('Rows', 8)}
         columns={number('Columns', 12)}
-        format={select('Position format', {
-          'Letter+Number': PositionFormat.LetterNumber,
-          Sequential: PositionFormat.Sequential
-        })}
-        value={['D2']}
-        disabled={['A5', 'C1']}
+        format={select(
+          'Position format',
+          {
+            'Letter+Number': PositionFormat.LetterNumber,
+            'Number+Number': PositionFormat.NumberNumber,
+            Sequential: PositionFormat.Sequential
+          },
+          PositionFormat.LetterNumber
+        )}
+        value={[8]}
+        disabled={[5, 20]}
         multiSelectionMode={select(
           'Multi selection mode',
           {
@@ -90,12 +97,17 @@ storiesOf('Well picker', module)
       <StateFullWellPicker
         rows={number('Rows', 8)}
         columns={number('Columns', 12)}
-        format={select('Position format', {
-          'Letter+Number': PositionFormat.LetterNumber,
-          Sequential: PositionFormat.Sequential
-        })}
+        format={select(
+          'Position format',
+          {
+            'Letter+Number': PositionFormat.LetterNumber,
+            'Number+Number': PositionFormat.NumberNumber,
+            Sequential: PositionFormat.Sequential
+          },
+          PositionFormat.LetterNumber
+        )}
         wellSize={50}
-        text={(label, wellPlate) => {
+        text={(index: number, label: string, wellPlate) => {
           return (
             <div style={{ fontSize: 12 }}>
               <div>{label}</div>
@@ -103,8 +115,8 @@ storiesOf('Well picker', module)
             </div>
           );
         }}
-        value={['D2']}
-        disabled={['A5', 'C1']}
+        value={[14]}
+        disabled={[5, 20]}
         multiSelectionMode={select(
           'Multi selection mode',
           {
@@ -115,8 +127,9 @@ storiesOf('Well picker', module)
           MultiSelectionMode.zone
         )}
         style={{
-          disabled: (label, wellPlate) => {
-            if (label.startsWith('A')) {
+          disabled: (index, label, wellPlate) => {
+            const position = wellPlate.getPosition(index);
+            if (position.row === 1) {
               return {
                 backgroundColor: 'grey'
               };
@@ -141,23 +154,31 @@ storiesOf('Well picker', module)
       <StateFullSingleWellPicker
         rows={number('Rows', 8)}
         columns={number('Columns', 12)}
-        format={select('Position format', {
-          'Letter+Number': PositionFormat.LetterNumber,
-          Sequential: PositionFormat.Sequential
-        })}
-        value="D2"
-        disabled={['E5', 'C3']}
+        format={select(
+          'Position format',
+          {
+            'Letter+Number': PositionFormat.LetterNumber,
+            'Number+Number': PositionFormat.NumberNumber,
+            Sequential: PositionFormat.Sequential
+          },
+          PositionFormat.LetterNumber
+        )}
+        value={4}
+        disabled={[4, 12]}
       />
     );
   });
 
-function StateFullWellPicker(props) {
+type IStateFullWellPickerProps = Omit<IMultiWellPickerProps, 'onChange'>;
+
+function StateFullWellPicker(props: IStateFullWellPickerProps) {
   const { value: initialValue, ...otherProps } = props;
   const [value, setValue] = useState(initialValue);
   return <MultiWellPicker value={value} onChange={setValue} {...otherProps} />;
 }
 
-function StateFullSingleWellPicker(props) {
+type IStateFullSingleWellPicker = Omit<ISingleWellPickerProps, 'onChange'>;
+function StateFullSingleWellPicker(props: IStateFullSingleWellPicker) {
   const { value: initialValue, ...otherProps } = props;
   const [value, setValue] = useState(initialValue);
   return <SingleWellPicker value={value} onChange={setValue} {...otherProps} />;

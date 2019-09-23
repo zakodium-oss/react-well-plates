@@ -1,15 +1,17 @@
 import React, { ReactNode } from 'react';
 import { CSSProperties, FunctionComponent, SyntheticEvent } from 'react';
+import { WellPlate } from 'well-plates';
 
 interface IWellProps {
   size: number;
-  value?: string;
+  value: number;
+  wellPlate: WellPlate;
   text?: ReactNode;
-  onClick?: (label: string, e: React.MouseEvent) => void;
-  onEnter?: (label: string, e: SyntheticEvent) => void;
-  onLeave?: (label: string, e: SyntheticEvent) => void;
-  onMouseUp?: (label: string, e: React.MouseEvent) => void;
-  onMouseDown?: (label: string, e: React.MouseEvent) => void;
+  onClick?: (value: number, e: React.MouseEvent) => void;
+  onEnter?: (value: number, e: SyntheticEvent) => void;
+  onLeave?: (value: number, e: SyntheticEvent) => void;
+  onMouseUp?: (value: number, e: React.MouseEvent) => void;
+  onMouseDown?: (value: number, e: React.MouseEvent) => void;
   style?: CSSProperties;
   className?: string;
 }
@@ -47,7 +49,9 @@ const Well: FunctionComponent<IWellProps> = (props) => {
       className={props.className}
       style={style}
     >
-      <div style={{ width: '100%' }}>{props.text}</div>
+      <div style={{ width: '100%' }}>
+        {props.text ? props.text : props.wellPlate.getPositionCode(props.value)}
+      </div>
     </div>
   );
 };

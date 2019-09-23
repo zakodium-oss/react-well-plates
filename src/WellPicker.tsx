@@ -5,7 +5,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
-  ReactNode,
+  ReactNode
 } from 'react';
 import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
 import { WellPlateInternal } from './WellPlate';
@@ -13,31 +13,31 @@ import { WellPlateInternal } from './WellPlate';
 export enum MultiSelectionMode {
   rangeByRow,
   rangeByColumn,
-  zone,
+  zone
 }
 
 type ClassNameParam =
-  | ((label: string, wellPlate: WellPlate) => string)
+  | ((value: number, label: string, wellPlate: WellPlate) => string)
   | string;
 
 type StyleParam =
-  | ((label: string, wellPlate: WellPlate) => CSSProperties)
+  | ((value: number, label: string, wellPlate: WellPlate) => CSSProperties)
   | CSSProperties;
 
 const defaultWellPickerStyle = {
   default: { borderColor: 'black' },
   disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
   booked: { borderColor: 'orange' },
-  selected: { backgroundColor: 'lightgreen' },
+  selected: { backgroundColor: 'lightgreen' }
 };
 export interface IMultiWellPickerProps {
   wellSize?: number;
   rows: number;
   columns: number;
   format?: PositionFormat;
-  value: string[];
-  disabled?: string[];
-  onChange: (value: string[]) => void;
+  value: number[];
+  disabled?: Array<string | number>;
+  onChange: (value: number[]) => void;
   style?: {
     selected?: StyleParam;
     disabled?: StyleParam;
@@ -50,7 +50,7 @@ export interface IMultiWellPickerProps {
     booked?: ClassNameParam;
     default?: ClassNameParam;
   };
-  text?: (label: string, wellPlate: WellPlate) => ReactNode;
+  text?: (value: number, label: string, wellPlate: WellPlate) => ReactNode;
   multiSelectionMode?: MultiSelectionMode;
 }
 
@@ -59,10 +59,10 @@ export interface ISingleWellPickerProps {
   rows: number;
   columns: number;
   format?: PositionFormat;
-  value: string[];
-  text?: (label: string, wellPlate: WellPlate) => ReactNode;
-  disabled?: string[];
-  onChange: (value: string[]) => void;
+  value: number;
+  text?: (value: number, label: string, wellPlate: WellPlate) => ReactNode;
+  disabled?: Array<number | string>;
+  onChange: (value: number) => void;
   style?: {
     selected?: StyleParam;
     disabled?: StyleParam;
@@ -81,11 +81,11 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   columns,
   format,
   value,
-  text,
+  text = (value, label) => label,
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
-  className = {},
+  className = {}
 }) => {
   style = Object.assign({}, defaultWellPickerStyle, style);
   const wellPlate = useMemo(() => {
@@ -93,20 +93,20 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   }, [rows, columns, format]);
 
   const disabledSet = useMemo(() => {
-    return new Set(disabled);
-  }, [disabled]);
+    return new Set(disabled.map((label) => wellPlate.getIndex(label)));
+  }, [disabled, wellPlate]);
 
   const textCallback = useCallback(
-    (label: string) => {
-      if (text) return text(label, wellPlate);
-      return label;
+    (value: number) => {
+      const label = wellPlate.getPositionCode(value);
+      return text(value, label, wellPlate);
     },
     [text, wellPlate]
   );
 
   const classNameCallback = useCallback(
-    (label) => {
-      if (disabledSet.has(label)) {
+    (label: number) => {
+      if (disabledSet.has(wellPlate.getIndex(label))) {
         return getOrCallClassName(className.disabled, label, wellPlate);
       } else if (value === label) {
         return getOrCallClassName(className.selected, label, wellPlate);
@@ -120,18 +120,18 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
       className.disabled,
       className.selected,
       className.default,
-      wellPlate,
+      wellPlate
     ]
   );
 
   const styleCallback = useCallback(
-    (label) => {
-      if (disabledSet.has(label)) {
-        return getOrCallStyle(style.disabled, label, wellPlate);
-      } else if (value === label) {
-        return getOrCallStyle(style.selected, label, wellPlate);
+    (index: number) => {
+      if (disabledSet.has(index)) {
+        return getOrCallStyle(style.disabled, index, wellPlate);
+      } else if (value === index) {
+        return getOrCallStyle(style.selected, index, wellPlate);
       } else {
-        return getOrCallStyle(style.default, label, wellPlate);
+        return getOrCallStyle(style.default, index, wellPlate);
       }
     },
     [
@@ -140,18 +140,18 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
       style.disabled,
       style.selected,
       style.default,
-      wellPlate,
+      wellPlate
     ]
   );
 
   const toggleWell = useCallback(
-    (well) => {
-      if (well === value) {
+    (index: number) => {
+      if (index === value) {
         onChange(null);
-      } else if (disabledSet.has(well)) {
+      } else if (disabledSet.has(index)) {
         return;
       } else {
-        onChange(well);
+        onChange(index);
       }
     },
     [value, onChange, disabledSet]
@@ -171,22 +171,24 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
 
 function getOrCallClassName(
   fnOrObj: ClassNameParam,
-  label: string,
+  value: number,
   wellPlate: WellPlate
 ): string {
+  const label = wellPlate.getPositionCode(value);
   if (typeof fnOrObj === 'function') {
-    return fnOrObj(label, wellPlate);
+    return fnOrObj(value, label, wellPlate);
   }
   return fnOrObj;
 }
 
 function getOrCallStyle(
   fnOrObj: StyleParam,
-  label: string,
+  value: number,
   wellPlate: WellPlate
 ): CSSProperties {
+  const label = wellPlate.getPositionCode(value);
   if (typeof fnOrObj === 'function') {
-    return fnOrObj(label, wellPlate);
+    return fnOrObj(value, label, wellPlate);
   }
   return fnOrObj;
 }
@@ -196,7 +198,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
   columns,
   format,
   value,
-  text,
+  text = (value, label) => label,
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
@@ -209,16 +211,17 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
     return new WellPlate({ rows, columns, positionFormat: format });
   }, [rows, columns, format]);
   const valueSet = useMemo(() => {
-    return new Set(value);
-  }, [value]);
+    return new Set(value.map((label) => wellPlate.getIndex(label)));
+  }, [value, wellPlate]);
   const disabledSet = useMemo(() => {
-    return new Set(disabled);
-  }, [disabled]);
-  const [startWell, setStartWell] = useState(null);
-  const [bookedSet, setBooked] = useState(new Set<string>());
+    return new Set(disabled.map((label) => wellPlate.getIndex(label)));
+  }, [disabled, wellPlate]);
+  const [startWell, setStartWell] = useState<number | null>(null);
+  const [bookedSet, setBooked] = useState(new Set<number>());
 
   const selectRange = useCallback(
-    (start, end) => {
+    (start: number, end: number) => {
+      console.log({ start, end });
       let range: string[];
       switch (multiSelectionMode) {
         case MultiSelectionMode.zone: {
@@ -243,7 +246,8 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
           throw new Error('invalid multiSelectionMode');
         }
       }
-      setBooked(new Set(range));
+      console.log(range.map((label) => wellPlate.getIndex(label)));
+      setBooked(new Set(range.map((label) => wellPlate.getIndex(label))));
     },
     [multiSelectionMode, wellPlate]
   );
@@ -254,7 +258,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       if (bookedSet.size === 0) return;
       const newValue = [];
       for (let bookedEl of bookedSet) {
-        if (!disabledSet.has(bookedEl)) {
+        if (!disabledSet.has(wellPlate.getIndex(bookedEl))) {
           if (toggle) {
             if (!valueSet.has(bookedEl)) {
               newValue.push(bookedEl);
@@ -274,15 +278,14 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       }
       onChange(newValue);
     },
-    [bookedSet, onChange, disabledSet, valueSet]
+    [bookedSet, onChange, disabledSet, valueSet, wellPlate]
   );
 
   const toggleWell = useCallback(
-    (well) => {
+    (well: number) => {
       if (valueSet.has(well)) {
-        const index = value.findIndex((val) => val === well);
         const newValue = Array.from(valueSet);
-        newValue.splice(index, 1);
+        newValue.splice(well, 1);
         onChange(newValue);
       } else if (disabledSet.has(well)) {
         return;
@@ -290,7 +293,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
         onChange([...valueSet, well]);
       }
     },
-    [valueSet, value, onChange, disabledSet]
+    [valueSet, onChange, disabledSet]
   );
 
   const classNameCallback = useCallback(
@@ -313,28 +316,28 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       className.booked,
       className.selected,
       className.default,
-      wellPlate,
+      wellPlate
     ]
   );
 
   const textCallback = useCallback(
-    (label: string) => {
-      if (text) return text(label, wellPlate);
-      return label;
+    (value: number) => {
+      const label = wellPlate.getPositionCode(value);
+      return text(value, label, wellPlate);
     },
     [text, wellPlate]
   );
 
   const styleCallback = useCallback(
-    (label) => {
-      if (disabledSet.has(label)) {
-        return getOrCallStyle(style.disabled, label, wellPlate);
-      } else if (bookedSet.has(label)) {
-        return getOrCallStyle(style.booked, label, wellPlate);
-      } else if (valueSet.has(label)) {
-        return getOrCallStyle(style.selected, label, wellPlate);
+    (index: number) => {
+      if (disabledSet.has(index)) {
+        return getOrCallStyle(style.disabled, index, wellPlate);
+      } else if (bookedSet.has(index)) {
+        return getOrCallStyle(style.booked, index, wellPlate);
+      } else if (valueSet.has(index)) {
+        return getOrCallStyle(style.selected, index, wellPlate);
       } else {
-        return getOrCallStyle(style.default, label, wellPlate);
+        return getOrCallStyle(style.default, index, wellPlate);
       }
     },
     [
@@ -345,7 +348,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       style.booked,
       style.selected,
       style.default,
-      wellPlate,
+      wellPlate
     ]
   );
 
@@ -389,10 +392,10 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
         }
       }}
       onMouseDown={(well, event) => {
-        if (disabledSet.has(well)) return;
+        if (disabledSet.has(wellPlate.getIndex(well))) return;
         setStartWell(well);
         if (!event.shiftKey && !event.ctrlKey) {
-          if (!disabledSet.has(well)) {
+          if (!disabledSet.has(wellPlate.getIndex(well))) {
             onChange([well]);
           } else {
             onChange([]);
