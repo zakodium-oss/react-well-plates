@@ -21,7 +21,8 @@
     "build-storybook": "build-storybook",
     "deploy": "npm run build-storybook && gh-pages -d storybook-static",
     "eslint": "eslint --ext ts,tsx src",
-    "eslint-fix": "npm run eslint -- --fix"
+    "eslint-fix": "npm run eslint -- --fix",
+    "test": "npm run eslint && tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "@storybook/react": "^5.1.11",
     "@types/node": "^12.7.4",
     "@types/react": "^16.9.2",
+    "@types/webpack-env": "^1.14.0",
     "@typescript-eslint/parser": "^2.1.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
@@ -60,6 +62,6 @@
     "typescript": "^3.6.2"
   },
   "dependencies": {
-    "well-plates": "^3.2.2"
+    "well-plates": "^3.3.1"
   }
 }
