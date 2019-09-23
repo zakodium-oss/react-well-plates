@@ -35,9 +35,9 @@ export interface IMultiWellPickerProps {
   rows: number;
   columns: number;
   format?: PositionFormat;
-  value: number[];
-  disabled?: Array<string | number>;
-  onChange: (value: number[]) => void;
+  value: Array<number | string>;
+  disabled?: Array<number | string>;
+  onChange: (value: number[], label: string[]) => void;
   style?: {
     selected?: StyleParam;
     disabled?: StyleParam;
@@ -274,7 +274,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
           }
         }
       }
-      onChange(newValue);
+      onChange(newValue, newValue.map((val) => wellPlate.getPositionCode(val)));
     },
     [bookedSet, onChange, disabledSet, valueSet, wellPlate]
   );
@@ -284,11 +284,18 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       if (valueSet.has(well)) {
         const newValue = Array.from(valueSet);
         newValue.splice(well, 1);
-        onChange(newValue);
+        onChange(
+          newValue,
+          newValue.map((val) => wellPlate.getPositionCode(val))
+        );
       } else if (disabledSet.has(well)) {
         return;
       } else {
-        onChange([...valueSet, well]);
+        const newValue = [...valueSet, well];
+        onChange(
+          newValue,
+          newValue.map((val) => wellPlate.getPositionCode(val))
+        );
       }
     },
     [valueSet, onChange, disabledSet]
@@ -394,9 +401,9 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
         setStartWell(well);
         if (!event.shiftKey && !event.ctrlKey) {
           if (!disabledSet.has(wellPlate.getIndex(well))) {
-            onChange([well]);
+            onChange([well], [wellPlate.getPositionCode(well)]);
           } else {
-            onChange([]);
+            onChange([], []);
           }
         }
       }}
