@@ -5,7 +5,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
-  ReactNode
+  ReactNode,
 } from 'react';
 import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
 import { WellPlateInternal } from './WellPlate';
@@ -13,7 +13,7 @@ import { WellPlateInternal } from './WellPlate';
 export enum MultiSelectionMode {
   rangeByRow,
   rangeByColumn,
-  zone
+  zone,
 }
 
 type ClassNameParam =
@@ -28,7 +28,7 @@ const defaultWellPickerStyle = {
   default: { borderColor: 'black' },
   disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
   booked: { borderColor: 'orange' },
-  selected: { backgroundColor: 'lightgreen' }
+  selected: { backgroundColor: 'lightgreen' },
 };
 export interface IMultiWellPickerProps {
   wellSize?: number;
@@ -85,7 +85,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
-  className = {}
+  className = {},
 }) => {
   style = Object.assign({}, defaultWellPickerStyle, style);
   const wellPlate = useMemo(() => {
@@ -120,7 +120,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
       className.disabled,
       className.selected,
       className.default,
-      wellPlate
+      wellPlate,
     ]
   );
 
@@ -140,7 +140,7 @@ export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
       style.disabled,
       style.selected,
       style.default,
-      wellPlate
+      wellPlate,
     ]
   );
 
@@ -221,7 +221,6 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
 
   const selectRange = useCallback(
     (start: number, end: number) => {
-      console.log({ start, end });
       let range: string[];
       switch (multiSelectionMode) {
         case MultiSelectionMode.zone: {
@@ -246,7 +245,6 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
           throw new Error('invalid multiSelectionMode');
         }
       }
-      console.log(range.map((label) => wellPlate.getIndex(label)));
       setBooked(new Set(range.map((label) => wellPlate.getIndex(label))));
     },
     [multiSelectionMode, wellPlate]
@@ -316,7 +314,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       className.booked,
       className.selected,
       className.default,
-      wellPlate
+      wellPlate,
     ]
   );
 
@@ -348,7 +346,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       style.booked,
       style.selected,
       style.default,
-      wellPlate
+      wellPlate,
     ]
   );
 
