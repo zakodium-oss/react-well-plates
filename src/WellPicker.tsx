@@ -298,7 +298,7 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
         );
       }
     },
-    [valueSet, onChange, disabledSet]
+    [valueSet, onChange, disabledSet, wellPlate]
   );
 
   const classNameCallback = useCallback(
