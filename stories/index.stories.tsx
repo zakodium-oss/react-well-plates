@@ -43,7 +43,7 @@ storiesOf('Well plate', module)
             <div>{label}</div>
           </div>
         )}
-        wellStyle={(label, wellPlate) => {
+        wellStyle={(value, label, wellPlate) => {
           const factor = Math.round(
             (wellPlate.getIndex(label) / (wellPlate.rows * wellPlate.columns)) *
               120 +
@@ -107,11 +107,11 @@ storiesOf('Well picker', module)
           PositionFormat.LetterNumber
         )}
         wellSize={50}
-        text={(index: number, label: string, wellPlate) => {
+        text={(index: number, label: string) => {
           return (
             <div style={{ fontSize: 12 }}>
               <div>{label}</div>
-              <div>{wellPlate.getIndex(label)}</div>
+              <div>{index}</div>
             </div>
           );
         }}

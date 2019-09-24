@@ -22,7 +22,7 @@ const wellStyle: CSSProperties = {
   borderStyle: 'solid',
   display: 'flex',
   alignItems: 'center',
-  textAlign: 'center'
+  textAlign: 'center',
 };
 
 const Well: FunctionComponent<IWellProps> = (props) => {
@@ -34,9 +34,10 @@ const Well: FunctionComponent<IWellProps> = (props) => {
     width: size - 2 * wellMargin,
     height: size - 2 * wellMargin,
     margin: wellMargin,
-    ...customStyles
+    ...customStyles,
   };
 
+  console.log(props.text);
   return (
     <div
       onClick={props.onClick && ((e) => props.onClick(props.value, e))}

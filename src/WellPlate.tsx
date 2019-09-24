@@ -4,7 +4,7 @@ import React, {
   SyntheticEvent,
   useMemo,
   useCallback,
-  ReactNode
+  ReactNode,
 } from 'react';
 import { WellPlate as WellPlateClass, PositionFormat } from 'well-plates';
 
@@ -30,9 +30,17 @@ interface IWellPlateProps extends IWellPlateCommonProps {
   rows: number;
   columns: number;
   format?: PositionFormat;
-  wellClassName?: (label: string, wellPlate: WellPlateClass) => string;
-  text?: (label: string, wellPlate: WellPlateClass) => ReactNode;
-  wellStyle?: (value: number, wellPlate: WellPlateClass) => CSSProperties;
+  wellClassName?: (
+    value: number,
+    label: string,
+    wellPlate: WellPlateClass
+  ) => string;
+  text?: (value: number, label: string, wellPlate: WellPlateClass) => ReactNode;
+  wellStyle?: (
+    value: number,
+    label: string,
+    wellPlate: WellPlateClass
+  ) => CSSProperties;
   onClick?: (
     value: number,
     label: string,
@@ -100,14 +108,6 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     [onMouseDown, plate]
   );
 
-  const onMouseUpCallback = useCallback(
-    (value: number, e: React.MouseEvent) => {
-      const label = plate.getPositionCode(value);
-      if (onMouseUp) onMouseUp(value, label, plate, e);
-    },
-    [onMouseUp, plate]
-  );
-
   const onLeaveCallback = useCallback(
     (value: number, e: React.SyntheticEvent) => {
       const label = plate.getPositionCode(value);
@@ -126,21 +126,24 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 
   const wellStyleCallback = useCallback(
     (value: number) => {
-      if (wellStyle) return wellStyle(value, plate);
+      const label = plate.getPositionCode(value);
+      if (wellStyle) return wellStyle(value, label, plate);
     },
     [wellStyle, plate]
   );
 
   const wellClassNameCallback = useCallback(
-    (label) => {
-      if (wellClassName) return wellClassName(label, plate);
+    (value: number) => {
+      const label = plate.getPositionCode(value);
+      if (wellClassName) return wellClassName(value, label, plate);
     },
     [wellClassName, plate]
   );
 
   const textCallback = useCallback(
-    (label) => {
-      if (text) return text(label, plate);
+    (value: number) => {
+      const label = plate.getPositionCode(value);
+      if (text) return text(value, label, plate);
       return label;
     },
     [text, plate]
@@ -174,19 +177,19 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
 
   const headerStyle: CSSProperties = {
     width: wellSize,
-    textAlign: 'center'
+    textAlign: 'center',
   };
 
   const wellStyle: CSSProperties = {
     width: wellSize,
     height: wellSize,
-    userSelect: 'none'
+    userSelect: 'none',
   };
 
   const rowStyle: CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    height: wellSize
+    height: wellSize,
   };
 
   const boxStyle: CSSProperties = {
@@ -195,7 +198,7 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
     borderWidth: boxBorder,
     borderStyle: 'solid',
     borderColor: 'black',
-    width: wellSize * (plate.columns + 1) + boxPadding + boxBorder
+    width: wellSize * (plate.columns + 1) + boxPadding + boxBorder,
   };
 
   const headerColumnLabels = columnLabels.map((columnLabel) => (
@@ -218,7 +221,7 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
             onLeave={props.onLeave}
             onMouseDown={props.onMouseDown}
             onMouseUp={props.onMouseUp}
-            text={props.text(index)}
+            text={props.text ? props.text(index) : null}
             value={index}
             size={wellSize}
           />
@@ -245,7 +248,7 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
 };
 
 WellPlate.defaultProps = {
-  wellSize: 40
+  wellSize: 40,
 };
 
 export default WellPlate;
