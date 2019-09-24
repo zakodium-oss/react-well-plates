@@ -4,12 +4,10 @@ import { withInfo } from '@storybook/addon-info';
 import { withKnobs, select, number, boolean } from '@storybook/addon-knobs';
 
 import {
-  SingleWellPicker,
   WellPlate,
   MultiWellPicker,
   RangeSelectionMode,
-  IMultiWellPickerProps,
-  ISingleWellPickerProps,
+  IWellPickerProps,
 } from '../src/index';
 import { storiesOf } from '@storybook/react';
 
@@ -64,7 +62,7 @@ storiesOf('Well plate', module)
 storiesOf('Well picker', module)
   .addDecorator(withKnobs)
   .addDecorator(withInfo)
-  .add('Multi well picker', () => {
+  .add('Well picker', () => {
     return (
       <StateFullWellPicker
         rows={number('Rows', 8)}
@@ -94,7 +92,7 @@ storiesOf('Well picker', module)
       />
     );
   })
-  .add('Multi well picker with custom styles and text', () => {
+  .add('Well picker with custom styles and text', () => {
     return (
       <StateFullWellPicker
         rows={number('Rows', 8)}
@@ -152,38 +150,12 @@ storiesOf('Well picker', module)
         }}
       />
     );
-  })
-  .add('Single well picker', () => {
-    return (
-      <StateFullSingleWellPicker
-        rows={number('Rows', 8)}
-        columns={number('Columns', 12)}
-        format={select(
-          'Position format',
-          {
-            'Letter+Number': PositionFormat.LetterNumber,
-            'Number+Number': PositionFormat.NumberNumber,
-            Sequential: PositionFormat.Sequential,
-          },
-          PositionFormat.LetterNumber
-        )}
-        value={4}
-        disabled={[4, 12]}
-      />
-    );
   });
 
-type IStateFullWellPickerProps = Omit<IMultiWellPickerProps, 'onChange'>;
+type IStateFullWellPickerProps = Omit<IWellPickerProps, 'onChange'>;
 
 function StateFullWellPicker(props: IStateFullWellPickerProps) {
   const { value: initialValue, ...otherProps } = props;
   const [value, setValue] = useState(initialValue);
   return <MultiWellPicker value={value} onChange={setValue} {...otherProps} />;
-}
-
-type IStateFullSingleWellPicker = Omit<ISingleWellPickerProps, 'onChange'>;
-function StateFullSingleWellPicker(props: IStateFullSingleWellPicker) {
-  const { value: initialValue, ...otherProps } = props;
-  const [value, setValue] = useState(initialValue);
-  return <SingleWellPicker value={value} onChange={setValue} {...otherProps} />;
 }

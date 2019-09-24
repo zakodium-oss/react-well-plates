@@ -1,16 +1,7 @@
 import WellPlate from './WellPlate';
 import MultiWellPicker, {
-  IMultiWellPickerProps,
-  ISingleWellPickerProps,
+  IWellPickerProps,
   RangeSelectionMode,
-  SingleWellPicker,
 } from './WellPicker';
 
-export {
-  WellPlate,
-  MultiWellPicker,
-  IMultiWellPickerProps,
-  SingleWellPicker,
-  ISingleWellPickerProps,
-  RangeSelectionMode,
-};
+export { WellPlate, MultiWellPicker, IWellPickerProps, RangeSelectionMode };

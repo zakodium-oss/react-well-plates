@@ -31,7 +31,7 @@ const defaultWellPickerStyle = {
   booked: { borderColor: 'orange' },
   selected: { backgroundColor: 'lightgreen' },
 };
-export interface IMultiWellPickerProps {
+export interface IWellPickerProps {
   wellSize?: number;
   rows: number;
   columns: number;
@@ -55,121 +55,6 @@ export interface IMultiWellPickerProps {
   rangeSelectionMode?: RangeSelectionMode;
   pickMode?: boolean;
 }
-
-export interface ISingleWellPickerProps {
-  wellSize?: number;
-  rows: number;
-  columns: number;
-  format?: PositionFormat;
-  value: number;
-  text?: (value: number, label: string, wellPlate: WellPlate) => ReactNode;
-  disabled?: Array<number | string>;
-  onChange: (value: number) => void;
-  style?: {
-    selected?: StyleParam;
-    disabled?: StyleParam;
-    default?: StyleParam;
-  };
-  className?: {
-    selected?: ClassNameParam;
-    disabled?: ClassNameParam;
-    default?: ClassNameParam;
-  };
-}
-
-export const SingleWellPicker: FunctionComponent<ISingleWellPickerProps> = ({
-  wellSize,
-  rows,
-  columns,
-  format,
-  value,
-  text = (value, label) => label,
-  disabled = [],
-  onChange,
-  style = defaultWellPickerStyle,
-  className = {},
-}) => {
-  style = Object.assign({}, defaultWellPickerStyle, style);
-  const wellPlate = useMemo(() => {
-    return new WellPlate({ rows, columns, positionFormat: format });
-  }, [rows, columns, format]);
-
-  const disabledSet = useMemo(() => {
-    return new Set(disabled.map((label) => wellPlate.getIndex(label)));
-  }, [disabled, wellPlate]);
-
-  const textCallback = useCallback(
-    (value: number) => {
-      const label = wellPlate.getPositionCode(value);
-      return text(value, label, wellPlate);
-    },
-    [text, wellPlate]
-  );
-
-  const classNameCallback = useCallback(
-    (label: number) => {
-      if (disabledSet.has(wellPlate.getIndex(label))) {
-        return getOrCallClassName(className.disabled, label, wellPlate);
-      } else if (value === label) {
-        return getOrCallClassName(className.selected, label, wellPlate);
-      } else {
-        return getOrCallClassName(className.default, label, wellPlate);
-      }
-    },
-    [
-      value,
-      disabledSet,
-      className.disabled,
-      className.selected,
-      className.default,
-      wellPlate,
-    ]
-  );
-
-  const styleCallback = useCallback(
-    (index: number) => {
-      if (disabledSet.has(index)) {
-        return getOrCallStyle(style.disabled, index, wellPlate);
-      } else if (value === index) {
-        return getOrCallStyle(style.selected, index, wellPlate);
-      } else {
-        return getOrCallStyle(style.default, index, wellPlate);
-      }
-    },
-    [
-      disabledSet,
-      value,
-      style.disabled,
-      style.selected,
-      style.default,
-      wellPlate,
-    ]
-  );
-
-  const toggleWell = useCallback(
-    (index: number) => {
-      if (index === value) {
-        onChange(null);
-      } else if (disabledSet.has(index)) {
-        return;
-      } else {
-        onChange(index);
-      }
-    },
-    [value, onChange, disabledSet]
-  );
-
-  return (
-    <WellPlateInternal
-      wellSize={wellSize}
-      plate={wellPlate}
-      wellStyle={styleCallback}
-      wellClassName={classNameCallback}
-      onClick={toggleWell}
-      text={textCallback}
-    />
-  );
-};
 
 function getOrCallClassName(
   fnOrObj: ClassNameParam,
@@ -195,7 +80,7 @@ function getOrCallStyle(
   return fnOrObj;
 }
 
-const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
+const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   rows,
   columns,
   format,
