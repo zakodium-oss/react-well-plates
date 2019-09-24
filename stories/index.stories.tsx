@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { PositionFormat } from 'well-plates';
 import { withInfo } from '@storybook/addon-info';
-import { withKnobs, select, number } from '@storybook/addon-knobs';
+import { withKnobs, select, number, boolean } from '@storybook/addon-knobs';
 
 import {
   SingleWellPicker,
   WellPlate,
   MultiWellPicker,
-  MultiSelectionMode,
+  RangeSelectionMode,
   IMultiWellPickerProps,
-  ISingleWellPickerProps
+  ISingleWellPickerProps,
 } from '../src/index';
 import { storiesOf } from '@storybook/react';
 
@@ -28,7 +28,7 @@ storiesOf('Well plate', module)
         columns={12}
         wellSize={30}
         wellStyle={() => ({
-          fontSize: 'x-small'
+          fontSize: 'x-small',
         })}
       />
     );
@@ -54,7 +54,7 @@ storiesOf('Well plate', module)
           return {
             backgroundColor: `rgb(${factor}, ${factor}, ${factor})`,
             borderColor: 'green',
-            borderWidth: 2
+            borderWidth: 2,
           };
         }}
       />
@@ -74,21 +74,23 @@ storiesOf('Well picker', module)
           {
             'Letter+Number': PositionFormat.LetterNumber,
             'Number+Number': PositionFormat.NumberNumber,
-            Sequential: PositionFormat.Sequential
+            Sequential: PositionFormat.Sequential,
           },
           PositionFormat.LetterNumber
         )}
         value={[8]}
         disabled={[5, 20]}
-        multiSelectionMode={select(
-          'Multi selection mode',
+        rangeSelectionMode={select(
+          'Range selection mode',
           {
-            zone: MultiSelectionMode.zone,
-            'By row': MultiSelectionMode.rangeByRow,
-            'By column': MultiSelectionMode.rangeByColumn
+            zone: RangeSelectionMode.zone,
+            'By row': RangeSelectionMode.rangeByRow,
+            'By column': RangeSelectionMode.rangeByColumn,
+            off: RangeSelectionMode.off,
           },
-          MultiSelectionMode.zone
+          RangeSelectionMode.zone
         )}
+        pickMode={boolean('Pick mode on', true)}
       />
     );
   })
@@ -102,7 +104,7 @@ storiesOf('Well picker', module)
           {
             'Letter+Number': PositionFormat.LetterNumber,
             'Number+Number': PositionFormat.NumberNumber,
-            Sequential: PositionFormat.Sequential
+            Sequential: PositionFormat.Sequential,
           },
           PositionFormat.LetterNumber
         )}
@@ -117,34 +119,36 @@ storiesOf('Well picker', module)
         }}
         value={[14]}
         disabled={[5, 20]}
-        multiSelectionMode={select(
-          'Multi selection mode',
+        rangeSelectionMode={select(
+          'Range selection mode',
           {
-            zone: MultiSelectionMode.zone,
-            'By row': MultiSelectionMode.rangeByRow,
-            'By column': MultiSelectionMode.rangeByColumn
+            zone: RangeSelectionMode.zone,
+            'By row': RangeSelectionMode.rangeByRow,
+            'By column': RangeSelectionMode.rangeByColumn,
+            off: RangeSelectionMode.off,
           },
-          MultiSelectionMode.zone
+          RangeSelectionMode.zone
         )}
+        pickMode={boolean('Pick mode on', true)}
         style={{
           disabled: (index, label, wellPlate) => {
             const position = wellPlate.getPosition(index);
             if (position.row === 1) {
               return {
-                backgroundColor: 'grey'
+                backgroundColor: 'grey',
               };
             } else {
               return {
-                backgroundColor: 'lightgrey'
+                backgroundColor: 'lightgrey',
               };
             }
           },
           selected: {
-            backgroundColor: 'pink'
+            backgroundColor: 'pink',
           },
           booked: {
-            borderColor: 'red'
-          }
+            borderColor: 'red',
+          },
         }}
       />
     );
@@ -159,7 +163,7 @@ storiesOf('Well picker', module)
           {
             'Letter+Number': PositionFormat.LetterNumber,
             'Number+Number': PositionFormat.NumberNumber,
-            Sequential: PositionFormat.Sequential
+            Sequential: PositionFormat.Sequential,
           },
           PositionFormat.LetterNumber
         )}

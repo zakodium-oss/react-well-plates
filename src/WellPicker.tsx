@@ -10,10 +10,11 @@ import React, {
 import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
 import { WellPlateInternal } from './WellPlate';
 
-export enum MultiSelectionMode {
+export enum RangeSelectionMode {
   rangeByRow,
   rangeByColumn,
   zone,
+  off,
 }
 
 type ClassNameParam =
@@ -51,7 +52,8 @@ export interface IMultiWellPickerProps {
     default?: ClassNameParam;
   };
   text?: (value: number, label: string, wellPlate: WellPlate) => ReactNode;
-  multiSelectionMode?: MultiSelectionMode;
+  rangeSelectionMode?: RangeSelectionMode;
+  pickMode?: boolean;
 }
 
 export interface ISingleWellPickerProps {
@@ -203,7 +205,8 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
   onChange,
   style = defaultWellPickerStyle,
   className = {},
-  multiSelectionMode = MultiSelectionMode.zone,
+  rangeSelectionMode = RangeSelectionMode.zone,
+  pickMode = true,
   ...wellPlateProps
 }) => {
   style = Object.assign({}, defaultWellPickerStyle, style);
@@ -222,32 +225,35 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
   const selectRange = useCallback(
     (start: number, end: number) => {
       let range: string[];
-      switch (multiSelectionMode) {
-        case MultiSelectionMode.zone: {
+      switch (rangeSelectionMode) {
+        case RangeSelectionMode.zone: {
           range = wellPlate.getPositionCodeZone(start, end);
           break;
         }
-        case MultiSelectionMode.rangeByRow:
-        case MultiSelectionMode.rangeByColumn: {
+        case RangeSelectionMode.rangeByRow:
+        case RangeSelectionMode.rangeByColumn: {
           range = wellPlate.getPositionCodeRange(
             start,
             end,
-            multiSelectionMode === MultiSelectionMode.rangeByRow
+            rangeSelectionMode === RangeSelectionMode.rangeByRow
               ? RangeMode.byRows
               : RangeMode.byColumns
           );
           break;
         }
-        case MultiSelectionMode.rangeByColumn: {
+        case RangeSelectionMode.rangeByColumn: {
           break;
         }
+        case RangeSelectionMode.off: {
+          return;
+        }
         default: {
-          throw new Error('invalid multiSelectionMode');
+          throw new Error('invalid range selection mode');
         }
       }
       setBooked(new Set(range.map((label) => wellPlate.getIndex(label))));
     },
-    [multiSelectionMode, wellPlate]
+    [rangeSelectionMode, wellPlate]
   );
 
   const bookSelection = useCallback(
@@ -409,8 +415,10 @@ const MultiWellPicker: FunctionComponent<IMultiWellPickerProps> = ({
       }}
       onClick={(well, e) => {
         if (e.shiftKey || e.ctrlKey) {
-          toggleWell(well);
-          e.stopPropagation();
+          if (pickMode) {
+            toggleWell(well);
+            e.stopPropagation();
+          }
         }
       }}
     />
