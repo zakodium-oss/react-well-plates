@@ -62,6 +62,6 @@
     "typescript": "^3.6.2"
   },
   "dependencies": {
-    "well-plates": "^3.3.3"
+    "well-plates": "^4.0.0"
   }
 }
