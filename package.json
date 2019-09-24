@@ -13,7 +13,7 @@
     "build": "npm run clean && npm run build:ts",
     "build:ts": "tsc && tsc -p tsconfig.es.json",
     "clean": "rimraf lib lib-es",
-    "npm:publish": "npm publish --access public && git push --follow-tags",
+    "npm:publish": "npm t && npm publish --access public && git push --follow-tags",
     "prepublishOnly": "npm run build",
     "postpublish": "npm run deploy",
     "watch": "tsc -p tsconfig.es.json -w",
