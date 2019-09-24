@@ -33,43 +33,43 @@ interface IWellPlateProps extends IWellPlateCommonProps {
   wellClassName?: (
     value: number,
     label: string,
-    wellPlate: WellPlateClass
+    wellPlate: WellPlateClass,
   ) => string;
   text?: (value: number, label: string, wellPlate: WellPlateClass) => ReactNode;
   wellStyle?: (
     value: number,
     label: string,
-    wellPlate: WellPlateClass
+    wellPlate: WellPlateClass,
   ) => CSSProperties;
   onClick?: (
     value: number,
     label: string,
     wellPlate: WellPlateClass,
-    e: React.MouseEvent
+    e: React.MouseEvent,
   ) => void;
   onEnter?: (
     value: number,
     label: string,
     wellPlate: WellPlateClass,
-    e: SyntheticEvent
+    e: SyntheticEvent,
   ) => void;
   onLeave?: (
     value: number,
     label: string,
     wellPlate: WellPlateClass,
-    e: SyntheticEvent
+    e: SyntheticEvent,
   ) => void;
   onMouseDown?: (
     value: number,
     label: string,
     wellPlate: WellPlateClass,
-    e: React.MouseEvent
+    e: React.MouseEvent,
   ) => void;
   onMouseUp?: (
     value: number,
     label: string,
     wellPlate: WellPlateClass,
-    e: React.MouseEvent
+    e: React.MouseEvent,
   ) => void;
 }
 
@@ -97,7 +97,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       const label = plate.getPositionCode(value);
       if (onClick) onClick(value, label, plate, e);
     },
-    [onClick, plate]
+    [onClick, plate],
   );
 
   const onMouseDownCallback = useCallback(
@@ -105,7 +105,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       const label = plate.getPositionCode(value);
       if (onMouseDown) onMouseDown(value, label, plate, e);
     },
-    [onMouseDown, plate]
+    [onMouseDown, plate],
   );
 
   const onLeaveCallback = useCallback(
@@ -113,7 +113,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       const label = plate.getPositionCode(value);
       if (onLeave) onLeave(value, label, plate, e);
     },
-    [onLeave, plate]
+    [onLeave, plate],
   );
 
   const onEnterCallback = useCallback(
@@ -121,7 +121,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       const label = plate.getPositionCode(value);
       if (onEnter) onEnter(value, label, plate, e);
     },
-    [onEnter, plate]
+    [onEnter, plate],
   );
 
   const wellStyleCallback = useCallback(
@@ -129,7 +129,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       const label = plate.getPositionCode(value);
       if (wellStyle) return wellStyle(value, label, plate);
     },
-    [wellStyle, plate]
+    [wellStyle, plate],
   );
 
   const wellClassNameCallback = useCallback(
@@ -137,7 +137,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       const label = plate.getPositionCode(value);
       if (wellClassName) return wellClassName(value, label, plate);
     },
-    [wellClassName, plate]
+    [wellClassName, plate],
   );
 
   const textCallback = useCallback(
@@ -146,7 +146,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       if (text) return text(value, label, plate);
       return label;
     },
-    [text, plate]
+    [text, plate],
   );
 
   return (
@@ -165,7 +165,7 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 };
 
 export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
-  props
+  props,
 ) => {
   const { plate, wellSize = 40 } = props;
 

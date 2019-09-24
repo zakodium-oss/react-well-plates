@@ -1,5 +1,9 @@
-import React, { ReactNode } from 'react';
-import { CSSProperties, FunctionComponent, SyntheticEvent } from 'react';
+import React, {
+  ReactNode,
+  CSSProperties,
+  FunctionComponent,
+  SyntheticEvent,
+} from 'react';
 import { WellPlate } from 'well-plates';
 
 interface IWellProps {

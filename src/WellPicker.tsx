@@ -8,6 +8,7 @@ import React, {
   ReactNode,
 } from 'react';
 import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
+
 import { WellPlateInternal } from './WellPlate';
 
 export enum RangeSelectionMode {
@@ -31,13 +32,14 @@ const defaultWellPickerStyle = {
   booked: { borderColor: 'orange' },
   selected: { backgroundColor: 'lightgreen' },
 };
+
 export interface IWellPickerProps {
   wellSize?: number;
   rows: number;
   columns: number;
   format?: PositionFormat;
-  value: Array<number | string>;
-  disabled?: Array<number | string>;
+  value: (number | string)[];
+  disabled?: (number | string)[];
   onChange: (value: number[], label: string[]) => void;
   style?: {
     selected?: StyleParam;
@@ -59,7 +61,7 @@ export interface IWellPickerProps {
 function getOrCallClassName(
   fnOrObj: ClassNameParam,
   value: number,
-  wellPlate: WellPlate
+  wellPlate: WellPlate,
 ): string {
   const label = wellPlate.getPositionCode(value);
   if (typeof fnOrObj === 'function') {
@@ -71,7 +73,7 @@ function getOrCallClassName(
 function getOrCallStyle(
   fnOrObj: StyleParam,
   value: number,
-  wellPlate: WellPlate
+  wellPlate: WellPlate,
 ): CSSProperties {
   const label = wellPlate.getPositionCode(value);
   if (typeof fnOrObj === 'function') {
@@ -85,7 +87,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   columns,
   format,
   value,
-  text = (value, label) => label,
+  text = (val, label) => label,
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
@@ -122,11 +124,8 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
             end,
             rangeSelectionMode === RangeSelectionMode.rangeByRow
               ? RangeMode.byRows
-              : RangeMode.byColumns
+              : RangeMode.byColumns,
           );
-          break;
-        }
-        case RangeSelectionMode.rangeByColumn: {
           break;
         }
         case RangeSelectionMode.off: {
@@ -138,7 +137,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       }
       setBooked(new Set(range.map((label) => wellPlate.getIndex(label))));
     },
-    [rangeSelectionMode, wellPlate]
+    [rangeSelectionMode, wellPlate],
   );
 
   const bookSelection = useCallback(
@@ -167,7 +166,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       }
       onChange(newValue, newValue.map((val) => wellPlate.getPositionCode(val)));
     },
-    [bookedSet, onChange, disabledSet, valueSet, wellPlate]
+    [bookedSet, onChange, disabledSet, valueSet, wellPlate],
   );
 
   const toggleWell = useCallback(
@@ -177,7 +176,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         newValue.splice(well, 1);
         onChange(
           newValue,
-          newValue.map((val) => wellPlate.getPositionCode(val))
+          newValue.map((val) => wellPlate.getPositionCode(val)),
         );
       } else if (disabledSet.has(well)) {
         return;
@@ -185,11 +184,11 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         const newValue = [...valueSet, well];
         onChange(
           newValue,
-          newValue.map((val) => wellPlate.getPositionCode(val))
+          newValue.map((val) => wellPlate.getPositionCode(val)),
         );
       }
     },
-    [valueSet, onChange, disabledSet, wellPlate]
+    [valueSet, onChange, disabledSet, wellPlate],
   );
 
   const classNameCallback = useCallback(
@@ -213,15 +212,15 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       className.selected,
       className.default,
       wellPlate,
-    ]
+    ],
   );
 
   const textCallback = useCallback(
-    (value: number) => {
-      const label = wellPlate.getPositionCode(value);
-      return text(value, label, wellPlate);
+    (val: number) => {
+      const label = wellPlate.getPositionCode(val);
+      return text(val, label, wellPlate);
     },
-    [text, wellPlate]
+    [text, wellPlate],
   );
 
   const styleCallback = useCallback(
@@ -245,7 +244,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       style.selected,
       style.default,
       wellPlate,
-    ]
+    ],
   );
 
   const clear = useCallback(
@@ -258,7 +257,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       setStartWell(null);
       setBooked(new Set());
     },
-    [bookSelection]
+    [bookSelection],
   );
 
   useEffect(() => {
