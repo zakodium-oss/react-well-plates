@@ -11,6 +11,43 @@ import {
 } from '../src/index';
 import { storiesOf } from '@storybook/react';
 
+function getFormatKnob() {
+  return select(
+    'Position format',
+    {
+      'Letter+Number': PositionFormat.LetterNumber,
+      'Number+Number': PositionFormat.NumberNumber,
+      Sequential: PositionFormat.Sequential,
+    },
+    PositionFormat.LetterNumber
+  );
+}
+
+function getRangeSelectionModeKnob() {
+  return select(
+    'Range selection mode',
+    {
+      zone: RangeSelectionMode.zone,
+      'By row': RangeSelectionMode.rangeByRow,
+      'By column': RangeSelectionMode.rangeByColumn,
+      off: RangeSelectionMode.off,
+    },
+    RangeSelectionMode.zone
+  );
+}
+
+function getPickModeKnob() {
+  return boolean('Pick mode on / off', true);
+}
+
+function getRowsKnob() {
+  return number('Rows', 8);
+}
+
+function getColumnsKnob() {
+  return number('Columns', 12);
+}
+
 storiesOf('Well plate', module)
   .addDecorator(withInfo)
   .add('Regular size', () => {
@@ -67,45 +104,20 @@ storiesOf('Well picker', module)
       <StateFullWellPicker
         rows={number('Rows', 8)}
         columns={number('Columns', 12)}
-        format={select(
-          'Position format',
-          {
-            'Letter+Number': PositionFormat.LetterNumber,
-            'Number+Number': PositionFormat.NumberNumber,
-            Sequential: PositionFormat.Sequential,
-          },
-          PositionFormat.LetterNumber
-        )}
+        format={getFormatKnob()}
         value={[8]}
         disabled={[5, 20]}
-        rangeSelectionMode={select(
-          'Range selection mode',
-          {
-            zone: RangeSelectionMode.zone,
-            'By row': RangeSelectionMode.rangeByRow,
-            'By column': RangeSelectionMode.rangeByColumn,
-            off: RangeSelectionMode.off,
-          },
-          RangeSelectionMode.zone
-        )}
-        pickMode={boolean('Pick mode on', true)}
+        rangeSelectionMode={getRangeSelectionModeKnob()}
+        pickMode={getPickModeKnob()}
       />
     );
   })
   .add('Well picker with custom styles and text', () => {
     return (
       <StateFullWellPicker
-        rows={number('Rows', 8)}
-        columns={number('Columns', 12)}
-        format={select(
-          'Position format',
-          {
-            'Letter+Number': PositionFormat.LetterNumber,
-            'Number+Number': PositionFormat.NumberNumber,
-            Sequential: PositionFormat.Sequential,
-          },
-          PositionFormat.LetterNumber
-        )}
+        rows={getRowsKnob()}
+        columns={getColumnsKnob()}
+        format={getFormatKnob()}
         wellSize={50}
         text={(index: number, label: string) => {
           return (
@@ -117,17 +129,8 @@ storiesOf('Well picker', module)
         }}
         value={[14]}
         disabled={[5, 20]}
-        rangeSelectionMode={select(
-          'Range selection mode',
-          {
-            zone: RangeSelectionMode.zone,
-            'By row': RangeSelectionMode.rangeByRow,
-            'By column': RangeSelectionMode.rangeByColumn,
-            off: RangeSelectionMode.off,
-          },
-          RangeSelectionMode.zone
-        )}
-        pickMode={boolean('Pick mode on', true)}
+        rangeSelectionMode={getRangeSelectionModeKnob()}
+        pickMode={getPickModeKnob()}
         style={{
           disabled: (index, label, wellPlate) => {
             const position = wellPlate.getPosition(index);
