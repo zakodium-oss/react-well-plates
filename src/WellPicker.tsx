@@ -278,7 +278,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       wellClassName={classNameCallback}
       text={textCallback}
       onEnter={(well) => {
-        if (startWell) {
+        if (startWell !== null) {
           selectRange(startWell, well);
         }
       }}
