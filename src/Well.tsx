@@ -37,7 +37,6 @@ const Well: FunctionComponent<IWellProps> = (props) => {
     ...customStyles,
   };
 
-  console.log(props.text);
   return (
     <div
       onClick={props.onClick && ((e) => props.onClick(props.value, e))}
