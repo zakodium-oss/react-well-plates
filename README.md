@@ -11,8 +11,6 @@ Render well plates in react.
 
 `$ npm install --save react-well-plates`
 
-There is a peer dependency on [well-plates](https://www.npmjs.com/package/well-plates). This library is used to create a well plate and allows to associate data to each well.
-
 ## Usage
 
 ```jsx
