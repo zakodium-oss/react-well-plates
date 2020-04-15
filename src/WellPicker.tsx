@@ -164,7 +164,10 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           }
         }
       }
-      onChange(newValue, newValue.map((val) => wellPlate.getPositionCode(val)));
+      onChange(
+        newValue,
+        newValue.map((val) => wellPlate.getPositionCode(val)),
+      );
     },
     [bookedSet, onChange, disabledSet, valueSet, wellPlate],
   );
