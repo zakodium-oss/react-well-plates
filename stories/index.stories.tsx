@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { PositionFormat } from 'well-plates';
 import { withInfo } from '@storybook/addon-info';
 import { withKnobs, select, number, boolean } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react';
+import React, { useState } from 'react';
+import { PositionFormat } from 'well-plates';
 
 import {
   WellPlate,
@@ -9,7 +10,6 @@ import {
   RangeSelectionMode,
   IWellPickerProps,
 } from '../src/index';
-import { storiesOf } from '@storybook/react';
 
 function getFormatKnob() {
   return select(
@@ -19,7 +19,7 @@ function getFormatKnob() {
       'Number+Number': PositionFormat.NumberNumber,
       Sequential: PositionFormat.Sequential,
     },
-    PositionFormat.LetterNumber
+    PositionFormat.LetterNumber,
   );
 }
 
@@ -32,7 +32,7 @@ function getRangeSelectionModeKnob() {
       'By column': RangeSelectionMode.rangeByColumn,
       off: RangeSelectionMode.off,
     },
-    RangeSelectionMode.zone
+    RangeSelectionMode.zone,
   );
 }
 
@@ -74,17 +74,27 @@ storiesOf('Well plate', module)
         rows={8}
         columns={12}
         wellSize={50}
-        text={(label) => (
-          <div style={{ fontSize: 12 }}>
-            <div>test</div>
-            <div>{label}</div>
-          </div>
-        )}
+        text={(index) => {
+          if (index === 0) {
+            return;
+          } else if (index === 1) {
+            return '';
+          } else if (index === 2) {
+            return null;
+          } else {
+            return (
+              <div style={{ fontSize: 12 }}>
+                <div>test</div>
+                <div>{index}</div>
+              </div>
+            );
+          }
+        }}
         wellStyle={(value, label, wellPlate) => {
           const factor = Math.round(
             (wellPlate.getIndex(label) / (wellPlate.rows * wellPlate.columns)) *
               120 +
-              (255 - 120)
+              (255 - 120),
           );
           return {
             backgroundColor: `rgb(${factor}, ${factor}, ${factor})`,

@@ -16,7 +16,7 @@ interface IWellPlateCommonProps {
 
 interface IWellPlateInternalProps extends IWellPlateCommonProps {
   plate: WellPlateClass;
-  wellClassName?: (value: number) => string;
+  wellClassName?: (value: number) => string | undefined;
   wellStyle?: (value: number) => CSSProperties;
   text?: (value: number) => ReactNode;
   onEnter?: (value: number, e: SyntheticEvent) => void;
@@ -34,7 +34,7 @@ interface IWellPlateProps extends IWellPlateCommonProps {
     value: number,
     label: string,
     wellPlate: WellPlateClass,
-  ) => string;
+  ) => string | undefined;
   text?: (value: number, label: string, wellPlate: WellPlateClass) => ReactNode;
   wellStyle?: (
     value: number,
@@ -221,7 +221,7 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
             onLeave={props.onLeave}
             onMouseDown={props.onMouseDown}
             onMouseUp={props.onMouseUp}
-            text={props.text ? props.text(index) : null}
+            text={props.text && props.text(index)}
             value={index}
             size={wellSize}
           />

@@ -20,7 +20,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "deploy": "npm run build-storybook && gh-pages -d storybook-static",
-    "eslint": "eslint --ext ts,tsx src",
+    "eslint": "eslint --ext ts,tsx src stories",
     "eslint-fix": "npm run eslint -- --fix",
     "test": "npm run eslint && tsc --noEmit"
   },

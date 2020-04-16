@@ -54,7 +54,9 @@ const Well: FunctionComponent<IWellProps> = (props) => {
       style={style}
     >
       <div style={{ width: '100%' }}>
-        {props.text ? props.text : props.wellPlate.getPositionCode(props.value)}
+        {props.text !== undefined
+          ? props.text
+          : props.wellPlate.getPositionCode(props.value)}
       </div>
     </div>
   );
