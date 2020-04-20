@@ -150,8 +150,9 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   const toggleWell = useCallback(
     (well: number) => {
       if (valueSet.has(well)) {
-        const newValue = Array.from(valueSet);
-        newValue.splice(well, 1);
+        const valueSetCopy = new Set(valueSet);
+        valueSetCopy.delete(well);
+        const newValue = Array.from(valueSetCopy);
         onChange(
           newValue,
           newValue.map((val) => wellPlate.getPositionCode(val)),
