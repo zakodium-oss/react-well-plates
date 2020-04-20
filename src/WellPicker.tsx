@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
 
-import { WellPlateInternal } from './WellPlate';
+import { WellPlateInternal, Cell } from './WellPlate';
 
 export enum RangeSelectionMode {
   rangeByRow,
@@ -18,19 +18,29 @@ export enum RangeSelectionMode {
   off,
 }
 
-type ClassNameParam =
-  | ((value: number, label: string, wellPlate: WellPlate) => string)
-  | string;
+interface PickCell extends Cell {
+  disabled: boolean;
+  booked: boolean;
+  selected: boolean;
+}
 
-type StyleParam =
-  | ((value: number, label: string, wellPlate: WellPlate) => CSSProperties)
-  | CSSProperties;
+type ClassNameParam = (cell: PickCell) => string;
+type StyleParam = (cell: PickCell) => CSSProperties;
 
-const defaultWellPickerStyle = {
-  default: { borderColor: 'black' },
-  disabled: { backgroundColor: 'lightgray', borderColor: 'black' },
-  booked: { borderColor: 'orange' },
-  selected: { backgroundColor: 'lightgreen' },
+const defaultWellPickerStyle: StyleParam = ({ booked, disabled, selected }) => {
+  const styles: CSSProperties = {
+    borderColor: 'black',
+  };
+  if (booked) {
+    styles.borderColor = 'orange';
+  }
+  if (disabled) {
+    styles.backgroundColor = 'lightgray';
+  }
+  if (selected) {
+    styles.backgroundColor = 'lightgreen';
+  }
+  return styles;
 };
 
 export interface IWellPickerProps {
@@ -41,45 +51,11 @@ export interface IWellPickerProps {
   value: (number | string)[];
   disabled?: (number | string)[];
   onChange: (value: number[], label: string[]) => void;
-  style?: {
-    selected?: StyleParam;
-    disabled?: StyleParam;
-    booked?: StyleParam;
-    default?: StyleParam;
-  };
-  className?: {
-    selected?: ClassNameParam;
-    disabled?: ClassNameParam;
-    booked?: ClassNameParam;
-    default?: ClassNameParam;
-  };
-  text?: (value: number, label: string, wellPlate: WellPlate) => ReactNode;
+  style?: StyleParam;
+  className?: ClassNameParam;
+  text?: (cell: PickCell) => ReactNode;
   rangeSelectionMode?: RangeSelectionMode;
   pickMode?: boolean;
-}
-
-function getOrCallClassName(
-  fnOrObj: ClassNameParam,
-  value: number,
-  wellPlate: WellPlate,
-): string {
-  const label = wellPlate.getPositionCode(value);
-  if (typeof fnOrObj === 'function') {
-    return fnOrObj(value, label, wellPlate);
-  }
-  return fnOrObj;
-}
-
-function getOrCallStyle(
-  fnOrObj: StyleParam,
-  value: number,
-  wellPlate: WellPlate,
-): CSSProperties {
-  const label = wellPlate.getPositionCode(value);
-  if (typeof fnOrObj === 'function') {
-    return fnOrObj(value, label, wellPlate);
-  }
-  return fnOrObj;
 }
 
 const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
@@ -87,16 +63,15 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   columns,
   format,
   value,
-  text = (val, label) => label,
+  text = ({ label }) => label,
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
-  className = {},
+  className,
   rangeSelectionMode = RangeSelectionMode.zone,
   pickMode = true,
   ...wellPlateProps
 }) => {
-  style = Object.assign({}, defaultWellPickerStyle, style);
   const wellPlate = useMemo(() => {
     return new WellPlate({ rows, columns, positionFormat: format });
   }, [rows, columns, format]);
@@ -194,60 +169,53 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
     [valueSet, onChange, disabledSet, wellPlate],
   );
 
-  const classNameCallback = useCallback(
-    (label) => {
-      if (disabledSet.has(label)) {
-        return getOrCallClassName(className.disabled, label, wellPlate);
-      } else if (bookedSet.has(label)) {
-        return getOrCallClassName(className.booked, label, wellPlate);
-      } else if (valueSet.has(label)) {
-        return getOrCallClassName(className.selected, label, wellPlate);
-      } else {
-        return getOrCallClassName(className.default, label, wellPlate);
+  const classNameCallback = useCallback<(index: number) => string>(
+    (index) => {
+      if (className) {
+        return className({
+          booked: bookedSet.has(index),
+          disabled: disabledSet.has(index),
+          selected: valueSet.has(index),
+          label: wellPlate.getPositionCode(index),
+          index,
+          wellPlate,
+        });
       }
     },
-    [
-      valueSet,
-      bookedSet,
-      disabledSet,
-      className.disabled,
-      className.booked,
-      className.selected,
-      className.default,
-      wellPlate,
-    ],
+    [valueSet, bookedSet, disabledSet, className, wellPlate],
   );
 
-  const textCallback = useCallback(
-    (val: number) => {
-      const label = wellPlate.getPositionCode(val);
-      return text(val, label, wellPlate);
+  const textCallback = useCallback<(index: number) => ReactNode>(
+    (index) => {
+      const label = wellPlate.getPositionCode(index);
+      return text({
+        index,
+        label,
+        wellPlate,
+        booked: bookedSet.has(index),
+        selected: valueSet.has(index),
+        disabled: disabledSet.has(index),
+      });
     },
-    [text, wellPlate],
+    [text, wellPlate, bookedSet, valueSet, disabledSet],
   );
 
-  const styleCallback = useCallback(
-    (index: number) => {
-      if (disabledSet.has(index)) {
-        return getOrCallStyle(style.disabled, index, wellPlate);
-      } else if (bookedSet.has(index)) {
-        return getOrCallStyle(style.booked, index, wellPlate);
-      } else if (valueSet.has(index)) {
-        return getOrCallStyle(style.selected, index, wellPlate);
+  const styleCallback = useCallback<(index: number) => CSSProperties>(
+    (index) => {
+      if (style) {
+        return style({
+          booked: bookedSet.has(index),
+          disabled: disabledSet.has(index),
+          selected: valueSet.has(index),
+          index: index,
+          label: wellPlate.getPositionCode(index),
+          wellPlate,
+        });
       } else {
-        return getOrCallStyle(style.default, index, wellPlate);
+        return {};
       }
     },
-    [
-      disabledSet,
-      bookedSet,
-      valueSet,
-      style.disabled,
-      style.booked,
-      style.selected,
-      style.default,
-      wellPlate,
-    ],
+    [disabledSet, bookedSet, valueSet, style, wellPlate],
   );
 
   const clear = useCallback(

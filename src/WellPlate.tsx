@@ -10,37 +10,35 @@ import { WellPlate as WellPlateClass, PositionFormat } from 'well-plates';
 
 import Well from './Well';
 
+export interface Cell {
+  index: number;
+  label: string;
+  wellPlate: WellPlateClass;
+}
+
 interface IWellPlateCommonProps {
   wellSize?: number;
 }
 
 interface IWellPlateInternalProps extends IWellPlateCommonProps {
   plate: WellPlateClass;
-  wellClassName?: (value: number) => string | undefined;
-  wellStyle?: (value: number) => CSSProperties;
-  text?: (value: number) => ReactNode;
-  onEnter?: (value: number, e: SyntheticEvent) => void;
-  onLeave?: (value: number, e: SyntheticEvent) => void;
-  onMouseDown?: (value: number, e: React.MouseEvent) => void;
-  onMouseUp?: (value: number, e: React.MouseEvent) => void;
-  onClick?: (value: number, e: React.MouseEvent) => void;
+  wellClassName?: (index: number) => string | undefined;
+  wellStyle?: (index: number) => CSSProperties;
+  text?: (index: number) => ReactNode;
+  onEnter?: (index: number, e: SyntheticEvent) => void;
+  onLeave?: (index: number, e: SyntheticEvent) => void;
+  onMouseDown?: (index: number, e: React.MouseEvent) => void;
+  onMouseUp?: (index: number, e: React.MouseEvent) => void;
+  onClick?: (index: number, e: React.MouseEvent) => void;
 }
 
 interface IWellPlateProps extends IWellPlateCommonProps {
   rows: number;
   columns: number;
   format?: PositionFormat;
-  wellClassName?: (
-    value: number,
-    label: string,
-    wellPlate: WellPlateClass,
-  ) => string | undefined;
-  text?: (value: number, label: string, wellPlate: WellPlateClass) => ReactNode;
-  wellStyle?: (
-    value: number,
-    label: string,
-    wellPlate: WellPlateClass,
-  ) => CSSProperties;
+  wellClassName?: (cell: Cell) => string | undefined;
+  text?: (cell: Cell) => ReactNode;
+  wellStyle?: (cell: Cell) => CSSProperties;
   onClick?: (
     value: number,
     label: string,
@@ -88,70 +86,72 @@ const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     text,
     ...otherProps
   } = props;
-  const plate = useMemo(() => {
+  const wellPlate = useMemo(() => {
     return new WellPlateClass({ rows, columns, positionFormat: format });
   }, [rows, columns, format]);
 
   const onClickCallback = useCallback(
     (value: number, e: React.MouseEvent) => {
-      const label = plate.getPositionCode(value);
-      if (onClick) onClick(value, label, plate, e);
+      const label = wellPlate.getPositionCode(value);
+      if (onClick) onClick(value, label, wellPlate, e);
     },
-    [onClick, plate],
+    [onClick, wellPlate],
   );
 
   const onMouseDownCallback = useCallback(
     (value: number, e: React.MouseEvent) => {
-      const label = plate.getPositionCode(value);
-      if (onMouseDown) onMouseDown(value, label, plate, e);
+      const label = wellPlate.getPositionCode(value);
+      if (onMouseDown) onMouseDown(value, label, wellPlate, e);
     },
-    [onMouseDown, plate],
+    [onMouseDown, wellPlate],
   );
 
   const onLeaveCallback = useCallback(
     (value: number, e: React.SyntheticEvent) => {
-      const label = plate.getPositionCode(value);
-      if (onLeave) onLeave(value, label, plate, e);
+      const label = wellPlate.getPositionCode(value);
+      if (onLeave) onLeave(value, label, wellPlate, e);
     },
-    [onLeave, plate],
+    [onLeave, wellPlate],
   );
 
   const onEnterCallback = useCallback(
     (value: number, e: React.SyntheticEvent) => {
-      const label = plate.getPositionCode(value);
-      if (onEnter) onEnter(value, label, plate, e);
+      const label = wellPlate.getPositionCode(value);
+      if (onEnter) onEnter(value, label, wellPlate, e);
     },
-    [onEnter, plate],
+    [onEnter, wellPlate],
   );
 
   const wellStyleCallback = useCallback(
-    (value: number) => {
-      const label = plate.getPositionCode(value);
-      if (wellStyle) return wellStyle(value, label, plate);
+    (index: number) => {
+      const label = wellPlate.getPositionCode(index);
+      if (wellStyle) return wellStyle({ index, label, wellPlate });
     },
-    [wellStyle, plate],
+    [wellStyle, wellPlate],
   );
 
   const wellClassNameCallback = useCallback(
-    (value: number) => {
-      const label = plate.getPositionCode(value);
-      if (wellClassName) return wellClassName(value, label, plate);
+    (index: number) => {
+      const label = wellPlate.getPositionCode(index);
+      if (wellClassName) {
+        return wellClassName({ index, label, wellPlate });
+      }
     },
-    [wellClassName, plate],
+    [wellClassName, wellPlate],
   );
 
   const textCallback = useCallback(
-    (value: number) => {
-      const label = plate.getPositionCode(value);
-      if (text) return text(value, label, plate);
+    (index: number) => {
+      const label = wellPlate.getPositionCode(index);
+      if (text) return text({ index, label, wellPlate });
       return label;
     },
-    [text, plate],
+    [text, wellPlate],
   );
 
   return (
     <WellPlateInternal
-      plate={plate}
+      plate={wellPlate}
       onClick={onClickCallback}
       text={textCallback}
       onMouseDown={onMouseDownCallback}

@@ -1,7 +1,7 @@
 import { withInfo } from '@storybook/addon-info';
 import { withKnobs, select, number, boolean } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
-import React, { useState } from 'react';
+import React, { useState, CSSProperties } from 'react';
 import { PositionFormat } from 'well-plates';
 
 import {
@@ -74,7 +74,7 @@ storiesOf('Well plate', module)
         rows={8}
         columns={12}
         wellSize={50}
-        text={(index) => {
+        text={({ index }) => {
           if (index === 0) {
             return;
           } else if (index === 1) {
@@ -90,7 +90,7 @@ storiesOf('Well plate', module)
             );
           }
         }}
-        wellStyle={(value, label, wellPlate) => {
+        wellStyle={({ label, wellPlate }) => {
           const factor = Math.round(
             (wellPlate.getIndex(label) / (wellPlate.rows * wellPlate.columns)) *
               120 +
@@ -129,7 +129,7 @@ storiesOf('Well picker', module)
         columns={getColumnsKnob()}
         format={getFormatKnob()}
         wellSize={50}
-        text={(index: number, label: string) => {
+        text={({ index, label }) => {
           return (
             <div style={{ fontSize: 12 }}>
               <div>{label}</div>
@@ -141,25 +141,23 @@ storiesOf('Well picker', module)
         disabled={[5, 20]}
         rangeSelectionMode={getRangeSelectionModeKnob()}
         pickMode={getPickModeKnob()}
-        style={{
-          disabled: (index, label, wellPlate) => {
-            const position = wellPlate.getPosition(index);
+        style={({ index, wellPlate, disabled, booked, selected }) => {
+          const position = wellPlate.getPosition(index);
+          const styles: CSSProperties = {};
+          if (disabled) {
             if (position.row === 1) {
-              return {
-                backgroundColor: 'grey',
-              };
+              styles.backgroundColor = 'grey';
             } else {
-              return {
-                backgroundColor: 'lightgrey',
-              };
+              styles.backgroundColor = 'lightgray';
             }
-          },
-          selected: {
-            backgroundColor: 'pink',
-          },
-          booked: {
-            borderColor: 'red',
-          },
+          }
+          if (selected) {
+            styles.backgroundColor = 'pink';
+          }
+          if (booked) {
+            styles.borderColor = 'red';
+          }
+          return styles;
         }}
       />
     );
