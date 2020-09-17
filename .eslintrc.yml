@@ -1,3 +1,1 @@
-extends:
-  - cheminfo-react
-  - cheminfo-typescript
+extends: '@zakodium/eslint-config/typescript-react'
