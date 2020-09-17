@@ -259,7 +259,7 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         }
       }}
       onMouseDown={(well, event) => {
-        if (disabledSet.has(wellPlate.getIndex(well))) return;
+        // if (disabledSet.has(wellPlate.getIndex(well))) return;
         setStartWell(well);
         if (!event.shiftKey && !event.ctrlKey) {
           if (!disabledSet.has(wellPlate.getIndex(well))) {
