@@ -1,0 +1,3 @@
+interface IWellPlateCommonProps {
+  wellSize?: number;
+}

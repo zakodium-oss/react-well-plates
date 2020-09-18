@@ -9,13 +9,14 @@ import React, {
 } from 'react';
 import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
 
-import { WellPlateInternal, Cell } from './WellPlate';
+import { Cell } from './WellPlate';
+import { WellPlateInternal } from './util/WellPlateInternal';
 
 export enum RangeSelectionMode {
-  rangeByRow,
-  rangeByColumn,
-  zone,
-  off,
+  rangeByRow = 'rangeByRow',
+  rangeByColumn = 'rangeByColumn',
+  zone = 'zone',
+  off = 'off',
 }
 
 interface PickCell extends Cell {
@@ -58,7 +59,7 @@ export interface IWellPickerProps {
   pickMode?: boolean;
 }
 
-const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
+export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   rows,
   columns,
   format,
@@ -280,5 +281,3 @@ const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
     />
   );
 };
-
-export default MultiWellPicker;
