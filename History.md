@@ -1,3 +1,18 @@
+# [3.1.0](https://github.com/zakodium/react-well-plates/compare/v3.0.0...v3.1.0) (2020-09-18)
+
+
+### Bug Fixes
+
+* allow to start selection from disabled well ([20425ef](https://github.com/zakodium/react-well-plates/commit/20425eff4b9db18cdce2ba1c8f71a5ed9847a3da))
+
+
+### Features
+
+* add github CI action ([9035795](https://github.com/zakodium/react-well-plates/commit/90357956803d64cb6be9a0ce603ef1a953744fc1))
+* update storybook ([2d1bcbe](https://github.com/zakodium/react-well-plates/commit/2d1bcbeb4f17f08d467c120bd7108a0bc8ba7cc8))
+
+
+
 # [3.0.0](https://github.com/zakodium/react-well-plates/compare/v2.0.5...v3.0.0) (2020-04-20)
 
 
