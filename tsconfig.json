@@ -13,6 +13,6 @@
     "strict": false,
     "target": "esnext"
   },
-  "include": ["src/**/*", "stories/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "**/__tests__"]
 }
