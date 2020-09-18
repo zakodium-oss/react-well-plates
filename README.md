@@ -11,21 +11,6 @@ Render well plates in react.
 
 `$ npm install --save react-well-plates`
 
-## Usage
-
-```jsx
-import { WellPlate as WellPlateComponent } from 'react-well-plates';
-import { WellPlate } from 'well-plates';
-
-function () {
-    const wellPlate = new WellPlate({
-      rows: 8,
-      columns: 12
-    });
-    return <WellPlatesComponent wellPlate={wellPlate} />
-}
-```
-
 ## License
 
 [MIT](./LICENSE)
