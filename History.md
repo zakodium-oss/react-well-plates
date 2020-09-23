@@ -1,3 +1,12 @@
+## [3.1.2](https://github.com/zakodium/react-well-plates/compare/v3.1.1...v3.1.2) (2020-09-23)
+
+
+### Bug Fixes
+
+* correct typescript issue ([e0f268a](https://github.com/zakodium/react-well-plates/commit/e0f268a2b05579b03775bb9aeaabfae431b1847f))
+
+
+
 ## [3.1.1](https://github.com/zakodium/react-well-plates/compare/v3.1.0...v3.1.1) (2020-09-23)
 
 
