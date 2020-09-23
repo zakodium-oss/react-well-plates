@@ -1,3 +1,12 @@
+## [3.1.1](https://github.com/zakodium/react-well-plates/compare/v3.1.0...v3.1.1) (2020-09-23)
+
+
+### Bug Fixes
+
+* correct npm publish ([7d48733](https://github.com/zakodium/react-well-plates/commit/7d48733f2655f954107a17a3dddd2d12667e8bf6))
+
+
+
 # [3.1.0](https://github.com/zakodium/react-well-plates/compare/v3.0.0...v3.1.0) (2020-09-18)
 
 
