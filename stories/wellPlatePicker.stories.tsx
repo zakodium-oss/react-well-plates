@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/react';
 import React, { CSSProperties, useState } from 'react';
 
-import { RangeSelectionMode } from '../WellPicker';
-import { IWellPickerProps, MultiWellPicker } from '../index';
+import { RangeSelectionMode } from '../src/WellPicker';
+import { IWellPickerProps, MultiWellPicker } from '../src/index';
 
 export default {
   title: 'Example/MultiWellPicker',
