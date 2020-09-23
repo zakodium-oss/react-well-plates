@@ -7,6 +7,7 @@ import React, {
 import { WellPlate as WellPlateClass } from 'well-plates';
 
 import Well from './Well';
+import { IWellPlateCommonProps } from './types';
 
 interface IWellPlateInternalProps extends IWellPlateCommonProps {
   plate: WellPlateClass;

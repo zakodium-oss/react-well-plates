@@ -9,6 +9,7 @@ import React, {
 import { WellPlate as WellPlateClass, PositionFormat } from 'well-plates';
 
 import { WellPlateInternal } from './util/WellPlateInternal';
+import { IWellPlateCommonProps } from './util/types';
 
 export interface Cell {
   index: number;
@@ -146,8 +147,4 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       {...otherProps}
     />
   );
-};
-
-WellPlate.defaultProps = {
-  wellSize: 40,
 };

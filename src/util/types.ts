@@ -1,3 +1,3 @@
-interface IWellPlateCommonProps {
+export interface IWellPlateCommonProps {
   wellSize?: number;
 }
