@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14
-      - name: npm install and eslint
+      - name: npm install and test
         run: |
           npm i
-          npm run eslint
+          npm test
