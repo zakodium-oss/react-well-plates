@@ -71,14 +71,14 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
         <div key={columnLabel} style={wellStyle}>
           <Well
             wellPlate={plate}
-            className={props.wellClassName && props.wellClassName(index)}
-            style={props.wellStyle && props.wellStyle(index)}
+            className={props.wellClassName?.(index)}
+            style={props.wellStyle?.(index)}
             onClick={props.onClick}
             onEnter={props.onEnter}
             onLeave={props.onLeave}
             onMouseDown={props.onMouseDown}
             onMouseUp={props.onMouseUp}
-            text={props.text && props.text(index)}
+            text={props.text?.(index)}
             value={index}
             size={wellSize}
           />
