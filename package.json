@@ -19,7 +19,6 @@
     "watch": "tsc -p tsconfig.es.json -w",
     "dev": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy": "npm run build-storybook && gh-pages -d storybook-static",
     "eslint": "eslint --ext ts,tsx src stories",
     "eslint-fix": "npm run eslint -- --fix",
     "test": "npm run eslint && tsc --noEmit"
@@ -55,7 +54,6 @@
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.1.0",
     "eslint": "^7.11.0",
-    "gh-pages": "^3.1.0",
     "prettier": "^2.1.2",
     "react": "^16.13.1",
     "react-docgen-typescript-loader": "^3.7.2",
