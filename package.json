@@ -12,6 +12,7 @@
   "scripts": {
     "build": "npm run clean && npm run build:ts",
     "build:ts": "tsc && tsc -p tsconfig.es.json",
+    "check-types": "tsc --noEmit",
     "clean": "rimraf lib lib-es",
     "npm:publish": "npm t && npm publish --access public && git push --follow-tags",
     "prepublishOnly": "npm run build",
@@ -21,7 +22,7 @@
     "build-storybook": "build-storybook",
     "eslint": "eslint --ext ts,tsx src stories",
     "eslint-fix": "npm run eslint -- --fix",
-    "test": "npm run eslint && tsc --noEmit"
+    "test": "npm run eslint && npm run check-types"
   },
   "repository": {
     "type": "git",
