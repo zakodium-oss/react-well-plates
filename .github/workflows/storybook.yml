@@ -1,4 +1,4 @@
-name: Deploy storybook on gh-pages
+name: Deploy storybook on GitHub pages
 on:
   push:
     branches: master
