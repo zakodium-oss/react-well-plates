@@ -1,5 +1,12 @@
 # Changelog
 
+### [3.1.4](https://www.github.com/zakodium/react-well-plates/compare/v3.1.3...v3.1.4) (2020-10-21)
+
+
+### Bug Fixes
+
+* export PositionFormat from well-plates ([ec89309](https://www.github.com/zakodium/react-well-plates/commit/ec893099d0c528fffe9f6370af825ba07d39bc77))
+
 ### [3.1.3](https://github.com/zakodium/react-well-plates/compare/v3.1.2...v3.1.3) (2020-10-13)
 
 ## [3.1.2](https://github.com/zakodium/react-well-plates/compare/v3.1.1...v3.1.2) (2020-09-23)
@@ -138,6 +145,3 @@
 
 
 # 0.1.0 (2019-02-10)
-
-
-
