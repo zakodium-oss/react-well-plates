@@ -59,6 +59,11 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
+    "@storybook/addon-storysource": "^6.1.21",
     "well-plates": "^4.1.0"
+  },
+  "volta": {
+    "node": "15.5.1",
+    "npm": "6.14.11"
   }
 }
