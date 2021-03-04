@@ -75,5 +75,13 @@ type IStateFullWellPickerProps = Omit<IWellPickerProps, 'onChange'>;
 function StateFullWellPicker(props: IStateFullWellPickerProps) {
   const { value: initialValue, ...otherProps } = props;
   const [value, setValue] = useState(initialValue);
-  return <MultiWellPicker value={value} onChange={setValue} {...otherProps} />;
+
+  return (
+    <MultiWellPicker
+      displayAsGrid
+      value={value}
+      onChange={setValue}
+      {...otherProps}
+    />
+  );
 }

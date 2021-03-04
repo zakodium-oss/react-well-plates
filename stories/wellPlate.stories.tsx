@@ -22,6 +22,10 @@ export function Control(props: IWellPlateProps) {
   return <WellPlate {...props} />;
 }
 
+export function GridWellPlate() {
+  return <WellPlate rows={8} columns={12} displayAsGrid />;
+}
+
 export function SmallWellPlate() {
   return (
     <WellPlate

@@ -21,6 +21,7 @@ export interface IWellPlateProps extends IWellPlateCommonProps {
   rows: number;
   columns: number;
   format?: PositionFormat;
+  displayAsGrid?: boolean;
   wellClassName?: (cell: Cell) => string | undefined;
   text?: (cell: Cell) => ReactNode;
   wellStyle?: (cell: Cell) => CSSProperties;

@@ -11,6 +11,7 @@ import { IWellPlateCommonProps } from './types';
 
 interface IWellPlateInternalProps extends IWellPlateCommonProps {
   plate: WellPlateClass;
+  displayAsGrid?: boolean;
   wellClassName?: (index: number) => string | undefined;
   wellStyle?: (index: number) => CSSProperties;
   text?: (index: number) => ReactNode;
@@ -24,6 +25,91 @@ interface IWellPlateInternalProps extends IWellPlateCommonProps {
 export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
   props,
 ) => {
+  const { displayAsGrid = false } = props;
+
+  if (!displayAsGrid) {
+    return <DefaultWellPlateInternal {...props} />;
+  }
+
+  return <GridWellPlateInternal {...props} />;
+};
+
+function GridWellPlateInternal(
+  props: Omit<IWellPlateInternalProps, 'displayAsGrid'>,
+) {
+  const { plate } = props;
+
+  const columnLabels = plate.columnLabels;
+  const rowLabels = plate.rowLabels;
+
+  const cellStyle = {
+    borderStyle: 'solid',
+    borderColor: 'gray',
+    borderWidth: 1,
+  };
+
+  const values: Array<{ index: number; label: ReactNode }> = [];
+  for (let i = 0; i <= rowLabels.length - 1; i++) {
+    values.push({ index: undefined, label: rowLabels[i] });
+    for (let j = 0; j <= columnLabels.length - 1; j++) {
+      const index = plate.getIndex({ row: i, column: j });
+      const label = props.text?.(index);
+
+      values.push({ index, label });
+    }
+  }
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${columnLabels.length + 1}, 1fr)`,
+        gridTemplateRows: `repeat(${rowLabels.length + 1}, 1fr)`,
+        userSelect: 'none',
+        ...cellStyle,
+      }}
+    >
+      {[
+        { index: undefined, label: '' },
+        ...columnLabels.map((value) => ({ index: undefined, label: value })),
+        ...values,
+      ].map(({ index, label }) => {
+        if (index === undefined) {
+          return (
+            <div key={index} style={{ ...cellStyle, padding: 5 }}>
+              {label}
+            </div>
+          );
+        }
+
+        return (
+          <div
+            className={props.wellClassName(index)}
+            style={{
+              ...cellStyle,
+              padding: 5,
+              ...props.wellStyle(index),
+            }}
+            key={index}
+            onClick={props.onClick && ((e) => props.onClick(index, e))}
+            onMouseEnter={props.onEnter && ((e) => props.onEnter(index, e))}
+            onMouseLeave={props.onLeave && ((e) => props.onLeave(index, e))}
+            onMouseUp={props.onMouseUp && ((e) => props.onMouseUp(index, e))}
+            onMouseDown={
+              props.onMouseDown && ((e) => props.onMouseDown(index, e))
+            }
+          >
+            {label}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function DefaultWellPlateInternal(
+  props: Omit<IWellPlateInternalProps, 'displayAsGrid'>,
+) {
   const { plate, wellSize = 40 } = props;
 
   const rowLabels = plate.rowLabels;
@@ -85,6 +171,7 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
         </div>
       );
     });
+
     return (
       <div key={rowLabel} style={rowStyle}>
         <div style={headerStyle}>{rowLabel}</div>
@@ -102,4 +189,4 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
       {rows}
     </div>
   );
-};
+}

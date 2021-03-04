@@ -45,6 +45,7 @@ const defaultWellPickerStyle: StyleParam = ({ booked, disabled, selected }) => {
 };
 
 export interface IWellPickerProps {
+  displayAsGrid?: boolean;
   wellSize?: number;
   rows: number;
   columns: number;
