@@ -55,7 +55,10 @@ function GridWellPlateInternal(
       const index = plate.getIndex({ row: i, column: j });
       const label = props.text?.(index);
 
-      values.push({ index, label });
+      values.push({
+        index,
+        label: label === undefined ? plate.getPositionCode(index) : label,
+      });
     }
   }
 
@@ -63,8 +66,8 @@ function GridWellPlateInternal(
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: `repeat(${columnLabels.length + 1}, 1fr)`,
-        gridTemplateRows: `repeat(${rowLabels.length + 1}, 1fr)`,
+        gridTemplateColumns: `max-content repeat(${columnLabels.length}, 1fr)`,
+        gridTemplateRows: `repeat(${rowLabels.length}, 1fr)`,
         userSelect: 'none',
         textAlign: 'center',
         ...cellStyle,
@@ -85,13 +88,13 @@ function GridWellPlateInternal(
 
         return (
           <div
-            className={props.wellClassName(index)}
             style={{
               padding: 5,
               ...cellStyle,
               ...props.wellStyle(index),
             }}
             key={index}
+            className={props.wellClassName(index)}
             onClick={props.onClick && ((e) => props.onClick(index, e))}
             onMouseEnter={props.onEnter && ((e) => props.onEnter(index, e))}
             onMouseLeave={props.onLeave && ((e) => props.onLeave(index, e))}

@@ -22,35 +22,6 @@ export function Control(props: IWellPlateProps) {
   return <WellPlate {...props} />;
 }
 
-export function GridWellPlate() {
-  return (
-    <WellPlate
-      rows={8}
-      columns={12}
-      displayAsGrid
-      wellStyle={({ position }) => {
-        if (position.column % 2 === 0 && position.row % 2 === 0) {
-          return {
-            backgroundColor: 'rgb(202, 169, 204)',
-          };
-        } else if (position.column % 2 === 0 && position.row % 2 !== 0) {
-          return {
-            backgroundColor: 'rgb(202, 128, 245)',
-          };
-        } else if (position.column % 2 !== 0 && position.row % 2 === 0) {
-          return {
-            backgroundColor: 'rgb(204, 211, 243)',
-          };
-        } else {
-          return {
-            backgroundColor: 'white',
-          };
-        }
-      }}
-    />
-  );
-}
-
 export function SmallWellPlate() {
   return (
     <WellPlate
