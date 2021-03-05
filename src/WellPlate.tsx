@@ -6,7 +6,11 @@ import React, {
   useCallback,
   ReactNode,
 } from 'react';
-import { WellPlate as WellPlateClass, PositionFormat } from 'well-plates';
+import {
+  WellPlate as WellPlateClass,
+  PositionFormat,
+  IPosition,
+} from 'well-plates';
 
 import { WellPlateInternal } from './util/WellPlateInternal';
 import { IWellPlateCommonProps } from './util/types';
@@ -15,6 +19,7 @@ export interface Cell {
   index: number;
   label: string;
   wellPlate: WellPlateClass;
+  position: IPosition;
 }
 
 export interface IWellPlateProps extends IWellPlateCommonProps {
@@ -111,7 +116,9 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
   const wellStyleCallback = useCallback(
     (index: number) => {
       const label = wellPlate.getPositionCode(index);
-      if (wellStyle) return wellStyle({ index, label, wellPlate });
+      const position = wellPlate.getPosition(index);
+
+      if (wellStyle) return wellStyle({ index, label, wellPlate, position });
     },
     [wellStyle, wellPlate],
   );
@@ -119,8 +126,10 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
   const wellClassNameCallback = useCallback(
     (index: number) => {
       const label = wellPlate.getPositionCode(index);
+      const position = wellPlate.getPosition(index);
+
       if (wellClassName) {
-        return wellClassName({ index, label, wellPlate });
+        return wellClassName({ index, label, wellPlate, position });
       }
     },
     [wellClassName, wellPlate],
@@ -129,7 +138,9 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
   const textCallback = useCallback(
     (index: number) => {
       const label = wellPlate.getPositionCode(index);
-      if (text) return text({ index, label, wellPlate });
+      const position = wellPlate.getPosition(index);
+
+      if (text) return text({ index, label, wellPlate, position });
       return label;
     },
     [text, wellPlate],

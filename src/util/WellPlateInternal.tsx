@@ -66,6 +66,7 @@ function GridWellPlateInternal(
         gridTemplateColumns: `repeat(${columnLabels.length + 1}, 1fr)`,
         gridTemplateRows: `repeat(${rowLabels.length + 1}, 1fr)`,
         userSelect: 'none',
+        textAlign: 'center',
         ...cellStyle,
       }}
     >
@@ -86,8 +87,8 @@ function GridWellPlateInternal(
           <div
             className={props.wellClassName(index)}
             style={{
-              ...cellStyle,
               padding: 5,
+              ...cellStyle,
               ...props.wellStyle(index),
             }}
             key={index}
