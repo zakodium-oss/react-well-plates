@@ -42,7 +42,7 @@ function GridWellPlateInternal(
   const columnLabels = plate.columnLabels;
   const rowLabels = plate.rowLabels;
 
-  const cellStyle = {
+  const cellStyle: CSSProperties = {
     borderStyle: 'solid',
     borderColor: 'gray',
     borderWidth: 1,
@@ -69,7 +69,6 @@ function GridWellPlateInternal(
         gridTemplateColumns: `max-content repeat(${columnLabels.length}, 1fr)`,
         gridTemplateRows: `repeat(${rowLabels.length}, 1fr)`,
         userSelect: 'none',
-        textAlign: 'center',
         ...cellStyle,
       }}
     >
@@ -80,7 +79,16 @@ function GridWellPlateInternal(
       ].map(({ index, label }) => {
         if (index === undefined) {
           return (
-            <div key={index} style={{ ...cellStyle, padding: 5 }}>
+            <div
+              key={index}
+              style={{
+                ...cellStyle,
+                padding: 5,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               {label}
             </div>
           );
@@ -90,6 +98,9 @@ function GridWellPlateInternal(
           <div
             style={{
               padding: 5,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               ...cellStyle,
               ...props.wellStyle(index),
             }}
@@ -103,7 +114,7 @@ function GridWellPlateInternal(
               props.onMouseDown && ((e) => props.onMouseDown(index, e))
             }
           >
-            {label}
+            <div>{label}</div>
           </div>
         );
       })}
