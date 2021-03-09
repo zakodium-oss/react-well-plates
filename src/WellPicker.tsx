@@ -180,6 +180,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           disabled: disabledSet.has(index),
           selected: valueSet.has(index),
           label: wellPlate.getPositionCode(index),
+          position: wellPlate.getPosition(index),
           index,
           wellPlate,
         });
@@ -196,6 +197,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         label,
         wellPlate,
         booked: bookedSet.has(index),
+        position: wellPlate.getPosition(index),
         selected: valueSet.has(index),
         disabled: disabledSet.has(index),
       });
@@ -212,6 +214,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           selected: valueSet.has(index),
           index: index,
           label: wellPlate.getPositionCode(index),
+          position: wellPlate.getPosition(index),
           wellPlate,
         });
       } else {

@@ -80,7 +80,7 @@ function GridWellPlateInternal(
         if (index === undefined) {
           return (
             <div
-              key={index}
+              key={`undef-${label.toLocaleString()}`}
               style={{
                 ...cellStyle,
                 padding: 5,
