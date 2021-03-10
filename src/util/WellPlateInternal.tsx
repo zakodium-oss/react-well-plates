@@ -48,16 +48,20 @@ function GridWellPlateInternal(
     borderWidth: 1,
   };
 
-  const values: Array<{ index: number; label: ReactNode }> = [];
+  const values: Array<{
+    index: number;
+    label: string;
+    isHeader: boolean;
+  }> = [];
   for (let i = 0; i <= rowLabels.length - 1; i++) {
-    values.push({ index: undefined, label: rowLabels[i] });
+    values.push({ index: undefined, label: rowLabels[i], isHeader: true });
     for (let j = 0; j <= columnLabels.length - 1; j++) {
       const index = plate.getIndex({ row: i, column: j });
-      const label = props.text?.(index);
 
       values.push({
         index,
-        label: label === undefined ? plate.getPositionCode(index) : label,
+        label: plate.getPositionCode(index),
+        isHeader: false,
       });
     }
   }
@@ -73,14 +77,18 @@ function GridWellPlateInternal(
       }}
     >
       {[
-        { index: undefined, label: '' },
-        ...columnLabels.map((value) => ({ index: undefined, label: value })),
+        { index: undefined, label: '', isHeader: true },
+        ...columnLabels.map((value) => ({
+          index: undefined,
+          label: value,
+          isHeader: true,
+        })),
         ...values,
-      ].map(({ index, label }) => {
-        if (index === undefined) {
+      ].map(({ index, label, isHeader }) => {
+        if (isHeader) {
           return (
             <div
-              key={`undef-${label.toLocaleString()}`}
+              key={`header-${label}`}
               style={{
                 ...cellStyle,
                 padding: 5,
@@ -114,7 +122,7 @@ function GridWellPlateInternal(
               props.onMouseDown && ((e) => props.onMouseDown(index, e))
             }
           >
-            <div>{label}</div>
+            <div>{props.text?.(index) || label}</div>
           </div>
         );
       })}
