@@ -11,6 +11,7 @@ import { IWellPlateCommonProps } from './types';
 
 interface IWellPlateInternalProps extends IWellPlateCommonProps {
   plate: WellPlateClass;
+  displayAsGrid?: boolean;
   wellClassName?: (index: number) => string | undefined;
   wellStyle?: (index: number) => CSSProperties;
   text?: (index: number) => ReactNode;
@@ -24,6 +25,114 @@ interface IWellPlateInternalProps extends IWellPlateCommonProps {
 export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
   props,
 ) => {
+  const { displayAsGrid = false } = props;
+
+  if (!displayAsGrid) {
+    return <DefaultWellPlateInternal {...props} />;
+  }
+
+  return <GridWellPlateInternal {...props} />;
+};
+
+function GridWellPlateInternal(
+  props: Omit<IWellPlateInternalProps, 'displayAsGrid'>,
+) {
+  const { plate } = props;
+
+  const columnLabels = plate.columnLabels;
+  const rowLabels = plate.rowLabels;
+
+  const cellStyle: CSSProperties = {
+    borderStyle: 'solid',
+    borderColor: 'gray',
+    borderWidth: 1,
+  };
+
+  const values: Array<{
+    index: number;
+    label: string;
+    isHeader: boolean;
+  }> = [];
+  for (let i = 0; i <= rowLabels.length - 1; i++) {
+    values.push({ index: undefined, label: rowLabels[i], isHeader: true });
+    for (let j = 0; j <= columnLabels.length - 1; j++) {
+      const index = plate.getIndex({ row: i, column: j });
+
+      values.push({
+        index,
+        label: plate.getPositionCode(index),
+        isHeader: false,
+      });
+    }
+  }
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `max-content repeat(${columnLabels.length}, 1fr)`,
+        gridTemplateRows: `repeat(${rowLabels.length}, 1fr)`,
+        userSelect: 'none',
+        ...cellStyle,
+      }}
+    >
+      {[
+        { index: undefined, label: '', isHeader: true },
+        ...columnLabels.map((value) => ({
+          index: undefined,
+          label: value,
+          isHeader: true,
+        })),
+        ...values,
+      ].map(({ index, label, isHeader }) => {
+        if (isHeader) {
+          return (
+            <div
+              key={`header-${label}`}
+              style={{
+                ...cellStyle,
+                padding: 5,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              {label}
+            </div>
+          );
+        }
+
+        return (
+          <div
+            style={{
+              padding: 5,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              ...cellStyle,
+              ...props.wellStyle(index),
+            }}
+            key={index}
+            className={props.wellClassName(index)}
+            onClick={props.onClick && ((e) => props.onClick(index, e))}
+            onMouseEnter={props.onEnter && ((e) => props.onEnter(index, e))}
+            onMouseLeave={props.onLeave && ((e) => props.onLeave(index, e))}
+            onMouseUp={props.onMouseUp && ((e) => props.onMouseUp(index, e))}
+            onMouseDown={
+              props.onMouseDown && ((e) => props.onMouseDown(index, e))
+            }
+          >
+            <div>{props.text?.(index) || label}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function DefaultWellPlateInternal(
+  props: Omit<IWellPlateInternalProps, 'displayAsGrid'>,
+) {
   const { plate, wellSize = 40 } = props;
 
   const rowLabels = plate.rowLabels;
@@ -85,6 +194,7 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
         </div>
       );
     });
+
     return (
       <div key={rowLabel} style={rowStyle}>
         <div style={headerStyle}>{rowLabel}</div>
@@ -102,4 +212,4 @@ export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
       {rows}
     </div>
   );
-};
+}
