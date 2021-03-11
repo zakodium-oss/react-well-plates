@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://www.github.com/zakodium/react-well-plates/compare/v3.1.4...v3.2.0) (2021-03-11)
+
+
+### Features
+
+* add displayAsGrid props ([#9](https://www.github.com/zakodium/react-well-plates/issues/9)) ([49678ad](https://www.github.com/zakodium/react-well-plates/commit/49678ad38812cd24824acf9042fd2a6d233bd739)), closes [#6](https://www.github.com/zakodium/react-well-plates/issues/6)
+
 ### [3.1.4](https://www.github.com/zakodium/react-well-plates/compare/v3.1.3...v3.1.4) (2020-10-21)
 
 
