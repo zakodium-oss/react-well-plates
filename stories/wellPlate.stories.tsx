@@ -63,7 +63,8 @@ export function CustomWellPlate() {
       }}
       wellStyle={({ label, wellPlate }) => {
         const factor = Math.round(
-          (wellPlate.getIndex(label) / (wellPlate.rows * wellPlate.columns)) *
+          (wellPlate.getPosition(label, 'index') /
+            (wellPlate.rows * wellPlate.columns)) *
             120 +
             (255 - 120),
         );

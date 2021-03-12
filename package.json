@@ -60,7 +60,7 @@
     "typescript": "^4.2.2"
   },
   "dependencies": {
-    "well-plates": "^4.1.1"
+    "well-plates": "^5.0.0"
   },
   "volta": {
     "node": "15.5.1",

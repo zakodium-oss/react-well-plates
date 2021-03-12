@@ -9,7 +9,7 @@ import React, {
 import {
   WellPlate as WellPlateClass,
   PositionFormat,
-  IPosition,
+  RowColumnPosition,
 } from 'well-plates';
 
 import { WellPlateInternal } from './util/WellPlateInternal';
@@ -19,7 +19,7 @@ export interface Cell {
   index: number;
   label: string;
   wellPlate: WellPlateClass;
-  position: IPosition;
+  position: RowColumnPosition;
 }
 
 export interface IWellPlateProps extends IWellPlateCommonProps {
@@ -83,7 +83,7 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 
   const onClickCallback = useCallback(
     (value: number, e: React.MouseEvent) => {
-      const label = wellPlate.getPositionCode(value);
+      const label = wellPlate.getPosition(value, 'formatted');
       if (onClick) onClick(value, label, wellPlate, e);
     },
     [onClick, wellPlate],
@@ -91,7 +91,7 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 
   const onMouseDownCallback = useCallback(
     (value: number, e: React.MouseEvent) => {
-      const label = wellPlate.getPositionCode(value);
+      const label = wellPlate.getPosition(value, 'formatted');
       if (onMouseDown) onMouseDown(value, label, wellPlate, e);
     },
     [onMouseDown, wellPlate],
@@ -99,7 +99,7 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 
   const onLeaveCallback = useCallback(
     (value: number, e: React.SyntheticEvent) => {
-      const label = wellPlate.getPositionCode(value);
+      const label = wellPlate.getPosition(value, 'formatted');
       if (onLeave) onLeave(value, label, wellPlate, e);
     },
     [onLeave, wellPlate],
@@ -107,7 +107,7 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 
   const onEnterCallback = useCallback(
     (value: number, e: React.SyntheticEvent) => {
-      const label = wellPlate.getPositionCode(value);
+      const label = wellPlate.getPosition(value, 'formatted');
       if (onEnter) onEnter(value, label, wellPlate, e);
     },
     [onEnter, wellPlate],
@@ -115,8 +115,8 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 
   const wellStyleCallback = useCallback(
     (index: number) => {
-      const label = wellPlate.getPositionCode(index);
-      const position = wellPlate.getPosition(index);
+      const label = wellPlate.getPosition(index, 'formatted');
+      const position = wellPlate.getPosition(index, 'row_column');
 
       if (wellStyle) return wellStyle({ index, label, wellPlate, position });
     },
@@ -125,8 +125,8 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 
   const wellClassNameCallback = useCallback(
     (index: number) => {
-      const label = wellPlate.getPositionCode(index);
-      const position = wellPlate.getPosition(index);
+      const label = wellPlate.getPosition(index, 'formatted');
+      const position = wellPlate.getPosition(index, 'row_column');
 
       if (wellClassName) {
         return wellClassName({ index, label, wellPlate, position });
@@ -137,8 +137,8 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
 
   const textCallback = useCallback(
     (index: number) => {
-      const label = wellPlate.getPositionCode(index);
-      const position = wellPlate.getPosition(index);
+      const label = wellPlate.getPosition(index, 'formatted');
+      const position = wellPlate.getPosition(index, 'row_column');
 
       if (text) return text({ index, label, wellPlate, position });
       return label;

@@ -49,7 +49,7 @@ export function CustomWellPicker() {
       disabled={[5, 20]}
       rangeSelectionMode={RangeSelectionMode.zone}
       style={({ index, wellPlate, disabled, booked, selected }) => {
-        const position = wellPlate.getPosition(index);
+        const position = wellPlate.getPosition(index, 'row_column');
         const styles: CSSProperties = {};
         if (disabled) {
           if (position.row === 1) {
