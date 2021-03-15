@@ -90,14 +90,14 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
 
   const selectRange = useCallback(
     (start: number, end: number) => {
-      let range: string[];
+      let range: number[];
       switch (rangeSelectionMode) {
         case RangeSelectionMode.zone: {
           range = wellPlate.getPositionSubset(
             start,
             end,
             SubsetMode.zone,
-            'formatted',
+            'index',
           );
           break;
         }
@@ -109,7 +109,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
             rangeSelectionMode === RangeSelectionMode.rangeByRow
               ? SubsetMode.byRows
               : SubsetMode.byColumns,
-            'formatted',
+            'index',
           );
 
           break;
@@ -121,9 +121,8 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           throw new Error('invalid range selection mode');
         }
       }
-      setBooked(
-        new Set(range.map((label) => wellPlate.getPosition(label, 'index'))),
-      );
+
+      setBooked(new Set(range));
     },
     [rangeSelectionMode, wellPlate],
   );

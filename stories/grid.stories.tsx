@@ -75,12 +75,9 @@ export function CustomGridWellPlate() {
           );
         }
       }}
-      wellStyle={({ label, wellPlate }) => {
+      wellStyle={({ wellPlate, index }) => {
         const factor = Math.round(
-          (wellPlate.getPosition(label, 'index') /
-            (wellPlate.rows * wellPlate.columns)) *
-            120 +
-            (255 - 120),
+          (index / (wellPlate.rows * wellPlate.columns)) * 120 + (255 - 120),
         );
         return {
           backgroundColor: `rgb(${factor}, ${factor}, ${factor})`,
