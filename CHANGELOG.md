@@ -1,5 +1,13 @@
 # Changelog
 
+### [3.2.1](https://www.github.com/zakodium/react-well-plates/compare/v3.2.0...v3.2.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* add one row with max-content ([8d10e21](https://www.github.com/zakodium/react-well-plates/commit/8d10e212407e53c5d7b04823643f6d7397be90fa))
+* change the id to use the map index ([#16](https://www.github.com/zakodium/react-well-plates/issues/16)) ([0b9cf9e](https://www.github.com/zakodium/react-well-plates/commit/0b9cf9e9599d9e490bf0c0f3a0c2c98f73b06232))
+
 ## [3.2.0](https://www.github.com/zakodium/react-well-plates/compare/v3.1.4...v3.2.0) (2021-03-11)
 
 
