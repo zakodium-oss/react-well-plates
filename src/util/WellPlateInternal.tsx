@@ -72,7 +72,7 @@ function GridWellPlateInternal(
       style={{
         display: 'grid',
         gridTemplateColumns: `max-content repeat(${columnLabels.length}, 1fr)`,
-        gridTemplateRows: `repeat(${rowLabels.length}, 1fr)`,
+        gridTemplateRows: `max-content repeat(${rowLabels.length}, 1fr)`,
         userSelect: 'none',
         ...cellStyle,
       }}
@@ -85,11 +85,12 @@ function GridWellPlateInternal(
           isHeader: true,
         })),
         ...values,
-      ].map(({ index, label, isHeader }) => {
+      ].map(({ index, label, isHeader }, mapIndex) => {
         if (isHeader) {
           return (
             <div
-              key={`header-${label}`}
+              // eslint-disable-next-line react/no-array-index-key
+              key={`header-${label}-${mapIndex}`}
               style={{
                 ...cellStyle,
                 padding: 5,
