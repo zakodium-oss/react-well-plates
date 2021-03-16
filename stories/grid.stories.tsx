@@ -75,11 +75,9 @@ export function CustomGridWellPlate() {
           );
         }
       }}
-      wellStyle={({ label, wellPlate }) => {
+      wellStyle={({ wellPlate, index }) => {
         const factor = Math.round(
-          (wellPlate.getIndex(label) / (wellPlate.rows * wellPlate.columns)) *
-            120 +
-            (255 - 120),
+          (index / (wellPlate.rows * wellPlate.columns)) * 120 + (255 - 120),
         );
         return {
           backgroundColor: `rgb(${factor}, ${factor}, ${factor})`,
@@ -108,7 +106,7 @@ export function CustomWellPicker() {
       disabled={[5, 20]}
       rangeSelectionMode={RangeSelectionMode.zone}
       style={({ index, wellPlate, disabled, booked, selected }) => {
-        const position = wellPlate.getPosition(index);
+        const position = wellPlate.getPosition(index, 'row_column');
         const styles: CSSProperties = {};
         if (disabled) {
           if (position.row === 1) {

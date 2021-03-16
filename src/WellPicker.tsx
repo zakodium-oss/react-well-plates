@@ -7,7 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react';
-import { WellPlate, RangeMode, PositionFormat } from 'well-plates';
+import { WellPlate, PositionFormat, SubsetMode } from 'well-plates';
 
 import { Cell } from './WellPlate';
 import { WellPlateInternal } from './util/WellPlateInternal';
@@ -78,31 +78,40 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
     return new WellPlate({ rows, columns, positionFormat: format });
   }, [rows, columns, format]);
   const valueSet = useMemo(() => {
-    return new Set(value.map((label) => wellPlate.getIndex(label)));
+    return new Set(value.map((label) => wellPlate.getPosition(label, 'index')));
   }, [value, wellPlate]);
   const disabledSet = useMemo(() => {
-    return new Set(disabled.map((label) => wellPlate.getIndex(label)));
+    return new Set(
+      disabled.map((label) => wellPlate.getPosition(label, 'index')),
+    );
   }, [disabled, wellPlate]);
   const [startWell, setStartWell] = useState<number | null>(null);
   const [bookedSet, setBooked] = useState(new Set<number>());
 
   const selectRange = useCallback(
     (start: number, end: number) => {
-      let range: string[];
+      let range: number[];
       switch (rangeSelectionMode) {
         case RangeSelectionMode.zone: {
-          range = wellPlate.getPositionCodeZone(start, end);
+          range = wellPlate.getPositionSubset(
+            start,
+            end,
+            SubsetMode.zone,
+            'index',
+          );
           break;
         }
         case RangeSelectionMode.rangeByRow:
         case RangeSelectionMode.rangeByColumn: {
-          range = wellPlate.getPositionCodeRange(
+          range = wellPlate.getPositionSubset(
             start,
             end,
             rangeSelectionMode === RangeSelectionMode.rangeByRow
-              ? RangeMode.byRows
-              : RangeMode.byColumns,
+              ? SubsetMode.byRows
+              : SubsetMode.byColumns,
+            'index',
           );
+
           break;
         }
         case RangeSelectionMode.off: {
@@ -112,7 +121,8 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           throw new Error('invalid range selection mode');
         }
       }
-      setBooked(new Set(range.map((label) => wellPlate.getIndex(label))));
+
+      setBooked(new Set(range));
     },
     [rangeSelectionMode, wellPlate],
   );
@@ -123,7 +133,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       if (bookedSet.size === 0) return;
       const newValue = [];
       for (let bookedEl of bookedSet) {
-        if (!disabledSet.has(wellPlate.getIndex(bookedEl))) {
+        if (!disabledSet.has(wellPlate.getPosition(bookedEl, 'index'))) {
           if (toggle) {
             if (!valueSet.has(bookedEl)) {
               newValue.push(bookedEl);
@@ -143,7 +153,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       }
       onChange(
         newValue,
-        newValue.map((val) => wellPlate.getPositionCode(val)),
+        newValue.map((val) => wellPlate.getPosition(val, 'formatted')),
       );
     },
     [bookedSet, onChange, disabledSet, valueSet, wellPlate],
@@ -157,7 +167,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         const newValue = Array.from(valueSetCopy);
         onChange(
           newValue,
-          newValue.map((val) => wellPlate.getPositionCode(val)),
+          newValue.map((val) => wellPlate.getPosition(val, 'formatted')),
         );
       } else if (disabledSet.has(well)) {
         return;
@@ -165,7 +175,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         const newValue = [...valueSet, well];
         onChange(
           newValue,
-          newValue.map((val) => wellPlate.getPositionCode(val)),
+          newValue.map((val) => wellPlate.getPosition(val, 'formatted')),
         );
       }
     },
@@ -179,8 +189,8 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           booked: bookedSet.has(index),
           disabled: disabledSet.has(index),
           selected: valueSet.has(index),
-          label: wellPlate.getPositionCode(index),
-          position: wellPlate.getPosition(index),
+          label: wellPlate.getPosition(index, 'formatted'),
+          position: wellPlate.getPosition(index, 'row_column'),
           index,
           wellPlate,
         });
@@ -191,13 +201,13 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
 
   const textCallback = useCallback<(index: number) => ReactNode>(
     (index) => {
-      const label = wellPlate.getPositionCode(index);
+      const label = wellPlate.getPosition(index, 'formatted');
       return text({
         index,
         label,
         wellPlate,
         booked: bookedSet.has(index),
-        position: wellPlate.getPosition(index),
+        position: wellPlate.getPosition(index, 'row_column'),
         selected: valueSet.has(index),
         disabled: disabledSet.has(index),
       });
@@ -213,8 +223,8 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           disabled: disabledSet.has(index),
           selected: valueSet.has(index),
           index: index,
-          label: wellPlate.getPositionCode(index),
-          position: wellPlate.getPosition(index),
+          label: wellPlate.getPosition(index, 'formatted'),
+          position: wellPlate.getPosition(index, 'row_column'),
           wellPlate,
         });
       } else {
@@ -267,8 +277,8 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         // if (disabledSet.has(wellPlate.getIndex(well))) return;
         setStartWell(well);
         if (!event.shiftKey && !event.ctrlKey) {
-          if (!disabledSet.has(wellPlate.getIndex(well))) {
-            onChange([well], [wellPlate.getPositionCode(well)]);
+          if (!disabledSet.has(wellPlate.getPosition(well, 'index'))) {
+            onChange([well], [wellPlate.getPosition(well, 'formatted')]);
           } else {
             onChange([], []);
           }

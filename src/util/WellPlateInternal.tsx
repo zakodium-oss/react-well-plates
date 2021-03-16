@@ -56,11 +56,12 @@ function GridWellPlateInternal(
   for (let i = 0; i <= rowLabels.length - 1; i++) {
     values.push({ index: undefined, label: rowLabels[i], isHeader: true });
     for (let j = 0; j <= columnLabels.length - 1; j++) {
-      const index = plate.getIndex({ row: i, column: j });
+      const position = { row: i, column: j };
+      const index = plate.getPosition(position, 'index');
 
       values.push({
         index,
-        label: plate.getPositionCode(index),
+        label: plate.getPosition(position, 'formatted'),
         isHeader: false,
       });
     }
@@ -175,7 +176,11 @@ function DefaultWellPlateInternal(
 
   const rows = rowLabels.map((rowLabel, rowIdx) => {
     const columns = columnLabels.map((columnLabel, columnIdx) => {
-      const index = plate.getIndex({ row: rowIdx, column: columnIdx });
+      const index = plate.getPosition(
+        { row: rowIdx, column: columnIdx },
+        'index',
+      );
+
       return (
         <div key={columnLabel} style={wellStyle}>
           <Well
