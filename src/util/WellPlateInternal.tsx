@@ -72,7 +72,7 @@ function GridWellPlateInternal(
       style={{
         display: 'grid',
         gridTemplateColumns: `max-content repeat(${columnLabels.length}, 1fr)`,
-        gridTemplateRows: `repeat(${rowLabels.length}, 1fr)`,
+        gridTemplateRows: `max-content repeat(${rowLabels.length}, 1fr)`,
         userSelect: 'none',
         ...cellStyle,
       }}
