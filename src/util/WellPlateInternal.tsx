@@ -6,20 +6,27 @@ import React, {
 } from 'react';
 import { WellPlate as WellPlateClass } from 'well-plates';
 
+import { HeaderCell } from '../WellPlate';
+
 import Well from './Well';
 import { IWellPlateCommonProps } from './types';
 
 interface IWellPlateInternalProps extends IWellPlateCommonProps {
   plate: WellPlateClass;
   displayAsGrid?: boolean;
-  wellClassName?: (index: number) => string | undefined;
-  wellStyle?: (index: number) => CSSProperties;
-  text?: (index: number) => ReactNode;
   onEnter?: (index: number, e: SyntheticEvent) => void;
   onLeave?: (index: number, e: SyntheticEvent) => void;
   onMouseDown?: (index: number, e: React.MouseEvent) => void;
   onMouseUp?: (index: number, e: React.MouseEvent) => void;
   onClick?: (index: number, e: React.MouseEvent) => void;
+
+  text?: (index: number) => ReactNode;
+  wellClassName?: (index: number) => string | undefined;
+  wellStyle?: (index: number) => CSSProperties;
+
+  headerClassName?: (cell: HeaderCell) => string | undefined;
+  headerStyle?: (cell: HeaderCell) => CSSProperties;
+  headerText?: (cell: HeaderCell) => ReactNode;
 }
 
 export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
@@ -52,9 +59,17 @@ function GridWellPlateInternal(
     index: number;
     label: string;
     isHeader: boolean;
+    position: { row: number; column: number };
   }> = [];
+
   for (let i = 0; i <= rowLabels.length - 1; i++) {
-    values.push({ index: undefined, label: rowLabels[i], isHeader: true });
+    values.push({
+      index: undefined,
+      label: rowLabels[i],
+      isHeader: true,
+      position: { column: 0, row: i },
+    });
+
     for (let j = 0; j <= columnLabels.length - 1; j++) {
       const position = { row: i, column: j };
       const index = plate.getPosition(position, 'index');
@@ -63,6 +78,7 @@ function GridWellPlateInternal(
         index,
         label: plate.getPosition(position, 'formatted'),
         isHeader: false,
+        position,
       });
     }
   }
@@ -78,21 +94,37 @@ function GridWellPlateInternal(
       }}
     >
       {[
-        { index: undefined, label: '', isHeader: true },
+        {
+          index: undefined,
+          label: '',
+          isHeader: true,
+          position: { row: 0, column: 0 },
+        },
         ...columnLabels.map((value) => ({
           index: undefined,
           label: value,
           isHeader: true,
+          position: {
+            row: 0,
+            column: 0,
+          },
         })),
         ...values,
-      ].map(({ index, label, isHeader }, mapIndex) => {
+      ].map(({ index, label, isHeader, position }, mapIndex) => {
         if (isHeader) {
+          const headerCell: HeaderCell = {
+            label,
+            position,
+          };
+
           return (
             <div
               // eslint-disable-next-line react/no-array-index-key
               key={`header-${label}-${mapIndex}`}
+              className={props.headerClassName?.(headerCell)}
               style={{
                 ...cellStyle,
+                ...props.headerStyle?.(headerCell),
                 padding: 5,
                 display: 'flex',
                 justifyContent: 'center',

@@ -29,6 +29,19 @@ export function GridWellPlate() {
       rows={8}
       columns={12}
       displayAsGrid
+      headerStyle={({ position, label }) => {
+        console.log(position, label);
+
+        if (position.row % 2 === 0) {
+          return {
+            backgroundColor: 'rgb(202, 169, 204)',
+          };
+        } else {
+          return {
+            backgroundColor: 'white',
+          };
+        }
+      }}
       wellStyle={({ position }) => {
         if (position.column % 2 === 0 && position.row % 2 === 0) {
           return {
