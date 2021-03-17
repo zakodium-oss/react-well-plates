@@ -30,15 +30,23 @@ export function GridWellPlate() {
       columns={12}
       displayAsGrid
       headerStyle={({ position, label }) => {
-        console.log(position, label);
+        if (label === '') {
+          return { backgroundColor: 'white' };
+        }
 
-        if (position.row % 2 === 0) {
+        if (
+          position.column % 2 === 0 &&
+          position.row === 0 &&
+          !isNaN(Number(label))
+        ) {
           return {
-            backgroundColor: 'rgb(202, 169, 204)',
+            backgroundColor: 'rgb(202, 128, 245)',
           };
-        } else {
+        }
+
+        if (position.row % 2 === 0 && position.column === 0) {
           return {
-            backgroundColor: 'white',
+            backgroundColor: 'rgb(204, 211, 243)',
           };
         }
       }}

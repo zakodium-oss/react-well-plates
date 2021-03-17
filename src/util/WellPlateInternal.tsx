@@ -100,15 +100,17 @@ function GridWellPlateInternal(
           isHeader: true,
           position: { row: 0, column: 0 },
         },
-        ...columnLabels.map((value) => ({
-          index: undefined,
-          label: value,
-          isHeader: true,
-          position: {
-            row: 0,
-            column: 0,
-          },
-        })),
+        ...columnLabels.map((value, index) => {
+          return {
+            index: undefined,
+            label: value,
+            isHeader: true,
+            position: {
+              row: 0,
+              column: index,
+            },
+          };
+        }),
         ...values,
       ].map(({ index, label, isHeader, position }, mapIndex) => {
         if (isHeader) {
@@ -131,7 +133,7 @@ function GridWellPlateInternal(
                 alignItems: 'center',
               }}
             >
-              {label}
+              {props.headerText ? props.headerText(headerCell) : label}
             </div>
           );
         }
