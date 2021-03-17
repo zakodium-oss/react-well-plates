@@ -10,7 +10,7 @@ interface IWellProps {
   size: number;
   value: number;
   wellPlate: WellPlate;
-  text?: ReactNode;
+  text?: (index: number) => ReactNode;
   onClick?: (value: number, e: React.MouseEvent) => void;
   onEnter?: (value: number, e: SyntheticEvent) => void;
   onLeave?: (value: number, e: SyntheticEvent) => void;
@@ -41,6 +41,8 @@ const Well: FunctionComponent<IWellProps> = (props) => {
     ...customStyles,
   };
 
+  const displayableValue = props.text(props.value);
+
   return (
     <div
       onClick={props.onClick && ((e) => props.onClick(props.value, e))}
@@ -54,7 +56,7 @@ const Well: FunctionComponent<IWellProps> = (props) => {
       style={style}
     >
       <div style={{ width: '100%' }}>
-        {props.text !== undefined ? props.text : ''}
+        {displayableValue === undefined ? '' : displayableValue}
       </div>
     </div>
   );

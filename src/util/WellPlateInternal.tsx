@@ -227,7 +227,7 @@ function DefaultWellPlateInternal(
             onLeave={props.onLeave}
             onMouseDown={props.onMouseDown}
             onMouseUp={props.onMouseUp}
-            text={props.text?.(index)}
+            text={props.text}
             value={index}
             size={wellSize}
           />
