@@ -82,10 +82,8 @@ export function CustomGridWellPlate() {
       wellSize={50}
       text={({ index }) => {
         if (index === 0) {
-          return;
+          return undefined;
         } else if (index === 1) {
-          return '';
-        } else if (index === 2) {
           return null;
         } else {
           return (

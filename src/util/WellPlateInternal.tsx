@@ -158,7 +158,7 @@ function GridWellPlateInternal(
               props.onMouseDown && ((e) => props.onMouseDown(index, e))
             }
           >
-            <div>{props.text?.(index) || label}</div>
+            <div>{props.text?.(index) === undefined ? '' : label}</div>
           </div>
         );
       })}
