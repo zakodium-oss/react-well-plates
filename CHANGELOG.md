@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://www.github.com/zakodium/react-well-plates/compare/v3.2.1...v4.0.0) (2021-03-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* the default label is now shown only if the text callback returns undefined
+
+### Features
+
+* add row header ([#19](https://www.github.com/zakodium/react-well-plates/issues/19)) ([ceabe19](https://www.github.com/zakodium/react-well-plates/commit/ceabe194777211e1485a4072ae526954c24feedc))
+
 ### [3.2.1](https://www.github.com/zakodium/react-well-plates/compare/v3.2.0...v3.2.1) (2021-03-16)
 
 
