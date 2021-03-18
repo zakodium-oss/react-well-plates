@@ -45,6 +45,21 @@ export function CustomWellPlate() {
       rows={8}
       columns={12}
       wellSize={50}
+      headerText={({ position }) => {
+        if (position.column > 5) {
+          return position.column;
+        } else if (position.column > 3) {
+          return null;
+        } else if (position.column > 2) {
+          return '';
+        } else if (position.row > 6) {
+          return position.row;
+        } else if (position.row === 4) {
+          return null;
+        } else if (position.row === 3) {
+          return '';
+        }
+      }}
       text={({ index }) => {
         if (index === 0) {
           return;

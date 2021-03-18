@@ -22,14 +22,25 @@ export interface Cell {
   position: RowColumnPosition;
 }
 
+export interface HeaderCell {
+  label: string;
+  position: RowColumnPosition;
+}
+
 export interface IWellPlateProps extends IWellPlateCommonProps {
   rows: number;
   columns: number;
   format?: PositionFormat;
   displayAsGrid?: boolean;
+
   wellClassName?: (cell: Cell) => string | undefined;
   text?: (cell: Cell) => ReactNode;
   wellStyle?: (cell: Cell) => CSSProperties;
+
+  headerClassName?: (cell: HeaderCell) => string | undefined;
+  headerStyle?: (cell: HeaderCell) => CSSProperties;
+  headerText?: (cell: HeaderCell) => ReactNode;
+
   onClick?: (
     value: number,
     label: string,
@@ -77,6 +88,7 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     text,
     ...otherProps
   } = props;
+
   const wellPlate = useMemo(() => {
     return new WellPlateClass({ rows, columns, positionFormat: format });
   }, [rows, columns, format]);
