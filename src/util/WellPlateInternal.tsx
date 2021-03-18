@@ -67,7 +67,7 @@ function GridWellPlateInternal(
       index: undefined,
       label: rowLabels[i],
       isHeader: true,
-      position: { column: 0, row: i },
+      position: { column: -1, row: i },
     });
 
     for (let j = 0; j <= columnLabels.length - 1; j++) {
@@ -98,7 +98,7 @@ function GridWellPlateInternal(
           index: undefined,
           label: '',
           isHeader: true,
-          position: { row: 0, column: 0 },
+          position: { row: -1, column: -1 },
         },
         ...columnLabels.map((value, index) => {
           return {
@@ -106,7 +106,7 @@ function GridWellPlateInternal(
             label: value,
             isHeader: true,
             position: {
-              row: 0,
+              row: -1,
               column: index,
             },
           };
@@ -118,6 +118,8 @@ function GridWellPlateInternal(
             label,
             position,
           };
+
+          const renderHeader = props.headerText?.(headerCell);
 
           return (
             <div
@@ -133,10 +135,12 @@ function GridWellPlateInternal(
                 alignItems: 'center',
               }}
             >
-              {props.headerText ? props.headerText(headerCell) : label}
+              <div>{renderHeader === undefined ? label : renderHeader}</div>
             </div>
           );
         }
+
+        const renderText = props.text?.(index);
 
         return (
           <div
@@ -158,7 +162,7 @@ function GridWellPlateInternal(
               props.onMouseDown && ((e) => props.onMouseDown(index, e))
             }
           >
-            <div>{props.text?.(index) === undefined ? '' : label}</div>
+            <div>{renderText === undefined ? label : renderText}</div>
           </div>
         );
       })}
@@ -203,8 +207,20 @@ function DefaultWellPlateInternal(
     width: wellSize * (plate.columns + 1) + boxPadding + boxBorder,
   };
 
-  const headerColumnLabels = columnLabels.map((columnLabel) => (
-    <div key={columnLabel} style={headerStyle}>
+  const headerColumnLabels = columnLabels.map((columnLabel, index) => (
+    <div
+      key={columnLabel}
+      style={{
+        ...headerStyle,
+        ...props.headerStyle?.({
+          label: columnLabel,
+          position: {
+            column: index,
+            row: -1,
+          },
+        }),
+      }}
+    >
       {columnLabel}
     </div>
   ));
@@ -237,7 +253,20 @@ function DefaultWellPlateInternal(
 
     return (
       <div key={rowLabel} style={rowStyle}>
-        <div style={headerStyle}>{rowLabel}</div>
+        <div
+          style={{
+            ...headerStyle,
+            ...props.headerStyle?.({
+              label: rowLabel,
+              position: {
+                column: -1,
+                row: rowIdx,
+              },
+            }),
+          }}
+        >
+          {rowLabel}
+        </div>
         {columns}
       </div>
     );

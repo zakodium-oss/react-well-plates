@@ -56,7 +56,7 @@ const Well: FunctionComponent<IWellProps> = (props) => {
       style={style}
     >
       <div style={{ width: '100%' }}>
-        {displayableValue === undefined ? '' : displayableValue}
+        {displayableValue === undefined ? null : displayableValue}
       </div>
     </div>
   );

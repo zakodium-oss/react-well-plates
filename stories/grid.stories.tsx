@@ -29,22 +29,14 @@ export function GridWellPlate() {
       rows={8}
       columns={12}
       displayAsGrid
-      headerStyle={({ position, label }) => {
-        if (label === '') {
-          return { backgroundColor: 'white' };
-        }
-
-        if (
-          position.column % 2 === 0 &&
-          position.row === 0 &&
-          !isNaN(Number(label))
-        ) {
+      headerStyle={({ position }) => {
+        if (position.column % 2 === 0 && position.row === -1) {
           return {
             backgroundColor: 'rgb(202, 128, 245)',
           };
         }
 
-        if (position.row % 2 === 0 && position.column === 0) {
+        if (position.row % 2 === 0 && position.column === -1) {
           return {
             backgroundColor: 'rgb(204, 211, 243)',
           };
@@ -80,11 +72,28 @@ export function CustomGridWellPlate() {
       rows={8}
       columns={12}
       wellSize={50}
+      headerText={({ position }) => {
+        if (position.column > 5) {
+          return position.column;
+        } else if (position.column > 3) {
+          return null;
+        } else if (position.column > 2) {
+          return '';
+        } else if (position.row > 6) {
+          return position.row;
+        } else if (position.row === 4) {
+          return null;
+        } else if (position.row === 3) {
+          return '';
+        }
+      }}
       text={({ index }) => {
         if (index === 0) {
           return undefined;
         } else if (index === 1) {
           return null;
+        } else if (index === 2) {
+          return '';
         } else {
           return (
             <div style={{ fontSize: 12 }}>
