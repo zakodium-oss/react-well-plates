@@ -135,7 +135,7 @@ function GridWellPlateInternal(
                 alignItems: 'center',
               }}
             >
-              <div>{renderHeader === undefined ? label : renderHeader}</div>
+              {renderHeader === undefined ? label : renderHeader}
             </div>
           );
         }

@@ -56,7 +56,9 @@ const Well: FunctionComponent<IWellProps> = (props) => {
       style={style}
     >
       <div style={{ width: '100%' }}>
-        {displayableValue === undefined ? null : displayableValue}
+        {displayableValue === undefined
+          ? props.wellPlate.getPosition(props.value, 'formatted')
+          : displayableValue}
       </div>
     </div>
   );
