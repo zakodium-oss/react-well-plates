@@ -28,6 +28,11 @@ interface PickCell extends Cell {
 type ClassNameParam = (cell: PickCell) => string;
 type StyleParam = (cell: PickCell) => CSSProperties;
 
+const userSelectNone: CSSProperties = {
+  userSelect: 'none',
+  WebkitUserSelect: 'none',
+};
+
 const defaultWellPickerStyle: StyleParam = ({ booked, disabled, selected }) => {
   const styles: CSSProperties = {
     borderColor: 'black',
@@ -217,8 +222,9 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
 
   const styleCallback = useCallback<(index: number) => CSSProperties>(
     (index) => {
-      if (style) {
-        return style({
+      return {
+        ...userSelectNone,
+        ...style?.({
           booked: bookedSet.has(index),
           disabled: disabledSet.has(index),
           selected: valueSet.has(index),
@@ -226,10 +232,8 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           label: wellPlate.getPosition(index, 'formatted'),
           position: wellPlate.getPosition(index, 'row_column'),
           wellPlate,
-        });
-      } else {
-        return {};
-      }
+        }),
+      };
     },
     [disabledSet, bookedSet, valueSet, style, wellPlate],
   );

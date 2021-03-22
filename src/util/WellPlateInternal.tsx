@@ -89,7 +89,6 @@ function GridWellPlateInternal(
         display: 'grid',
         gridTemplateColumns: `max-content repeat(${columnLabels.length}, 1fr)`,
         gridTemplateRows: `max-content repeat(${rowLabels.length}, 1fr)`,
-        userSelect: 'none',
         ...cellStyle,
       }}
     >
@@ -189,7 +188,6 @@ function DefaultWellPlateInternal(
   const wellStyle: CSSProperties = {
     width: wellSize,
     height: wellSize,
-    userSelect: 'none',
   };
 
   const rowStyle: CSSProperties = {
