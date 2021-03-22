@@ -29,6 +29,11 @@ interface IWellPlateInternalProps extends IWellPlateCommonProps {
   headerText?: (cell: HeaderCell) => ReactNode;
 }
 
+const plateDefaultStyles: CSSProperties = {
+  userSelect: 'none',
+  WebkitUserSelect: 'none',
+};
+
 export const WellPlateInternal: FunctionComponent<IWellPlateInternalProps> = (
   props,
 ) => {
@@ -89,6 +94,7 @@ function GridWellPlateInternal(
         display: 'grid',
         gridTemplateColumns: `max-content repeat(${columnLabels.length}, 1fr)`,
         gridTemplateRows: `max-content repeat(${rowLabels.length}, 1fr)`,
+        ...plateDefaultStyles,
         ...cellStyle,
       }}
     >
@@ -203,6 +209,7 @@ function DefaultWellPlateInternal(
     borderStyle: 'solid',
     borderColor: 'black',
     width: wellSize * (plate.columns + 1) + boxPadding + boxBorder,
+    ...plateDefaultStyles,
   };
 
   const headerColumnLabels = columnLabels.map((columnLabel, index) => (
