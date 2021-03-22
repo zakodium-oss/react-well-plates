@@ -1,5 +1,22 @@
 # Changelog
 
+## [5.0.0](https://www.github.com/zakodium/react-well-plates/compare/v4.0.0...v5.0.0) (2021-03-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* options for rangeSelectionMode have been renamed
+
+### Bug Fixes
+
+* allow selection of text when using displayer ([efc1cb0](https://www.github.com/zakodium/react-well-plates/commit/efc1cb03645499fe34a295b41fdf7ac2a5aa8175))
+* allow to select header cells in display component ([4559240](https://www.github.com/zakodium/react-well-plates/commit/4559240382cd9c6236b16a9c281688b6f163db97))
+* handle meta key instead of ctrl key on mac ([9c9f6ad](https://www.github.com/zakodium/react-well-plates/commit/9c9f6ada594471d3161e5ffb88ec6e70ba3d2bb5))
+* set well cursor and only make well selectable ([e7e9050](https://www.github.com/zakodium/react-well-plates/commit/e7e9050e2ba8505f66e5ba7ff6228ad5ef1d89c9))
+
+
+*  chore: upgrade well-plates ([9cff3b3](https://www.github.com/zakodium/react-well-plates/commit/9cff3b3f77e0f4583c2f4a7be09a7f3251fa955b))
+
 ## [4.0.0](https://www.github.com/zakodium/react-well-plates/compare/v3.2.1...v4.0.0) (2021-03-18)
 
 
