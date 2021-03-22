@@ -126,11 +126,15 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
   );
 
   const wellStyleCallback = useCallback(
-    (index: number) => {
+    (index: number): CSSProperties => {
       const label = wellPlate.getPosition(index, 'formatted');
       const position = wellPlate.getPosition(index, 'row_column');
 
-      if (wellStyle) return wellStyle({ index, label, wellPlate, position });
+      return {
+        userSelect: 'text',
+        WebkitUserSelect: 'text',
+        ...wellStyle?.({ index, label, wellPlate, position }),
+      };
     },
     [wellStyle, wellPlate],
   );
