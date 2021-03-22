@@ -86,6 +86,7 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     wellStyle,
     wellClassName,
     text,
+    headerStyle,
     ...otherProps
   } = props;
 
@@ -139,6 +140,17 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     [wellStyle, wellPlate],
   );
 
+  const headerStyleCallback = useCallback(
+    (cell: HeaderCell): CSSProperties => {
+      return {
+        userSelect: 'text',
+        WebkitUserSelect: 'text',
+        ...headerStyle?.(cell),
+      };
+    },
+    [headerStyle],
+  );
+
   const wellClassNameCallback = useCallback(
     (index: number) => {
       const label = wellPlate.getPosition(index, 'formatted');
@@ -172,6 +184,7 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
       onEnter={onEnterCallback}
       wellStyle={wellStyleCallback}
       wellClassName={wellClassNameCallback}
+      headerStyle={headerStyleCallback}
       {...otherProps}
     />
   );
