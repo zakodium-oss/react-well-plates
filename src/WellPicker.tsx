@@ -13,8 +13,8 @@ import { Cell } from './WellPlate';
 import { WellPlateInternal } from './util/WellPlateInternal';
 
 export enum RangeSelectionMode {
-  rangeByRow = 'rangeByRow',
-  rangeByColumn = 'rangeByColumn',
+  columns = 'columns',
+  rows = 'rows',
   zone = 'zone',
   off = 'off',
 }
@@ -101,14 +101,14 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           );
           break;
         }
-        case RangeSelectionMode.rangeByRow:
-        case RangeSelectionMode.rangeByColumn: {
+        case RangeSelectionMode.columns:
+        case RangeSelectionMode.rows: {
           range = wellPlate.getPositionSubset(
             start,
             end,
-            rangeSelectionMode === RangeSelectionMode.rangeByRow
-              ? SubsetMode.byRows
-              : SubsetMode.byColumns,
+            rangeSelectionMode === RangeSelectionMode.columns
+              ? SubsetMode.columns
+              : SubsetMode.rows,
             'index',
           );
 
