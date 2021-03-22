@@ -236,7 +236,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
 
   const clear = useCallback(
     (event) => {
-      if (event.shiftKey || event.ctrlKey) {
+      if (event.shiftKey || isCtrlKey(event)) {
         bookSelection(true);
       } else {
         bookSelection(false);
@@ -276,7 +276,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       onMouseDown={(well, event) => {
         // if (disabledSet.has(wellPlate.getIndex(well))) return;
         setStartWell(well);
-        if (!event.shiftKey && !event.ctrlKey) {
+        if (!event.shiftKey && !isCtrlKey(event)) {
           if (!disabledSet.has(wellPlate.getPosition(well, 'index'))) {
             onChange([well], [wellPlate.getPosition(well, 'formatted')]);
           } else {
@@ -285,7 +285,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
         }
       }}
       onClick={(well, e) => {
-        if (e.shiftKey || e.ctrlKey) {
+        if (e.shiftKey || isCtrlKey(e)) {
           if (pickMode) {
             toggleWell(well);
             e.stopPropagation();
@@ -295,3 +295,11 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
     />
   );
 };
+
+function isCtrlKey(event: React.MouseEvent) {
+  if (navigator.platform === 'MacIntel') {
+    return event.metaKey;
+  } else {
+    return event.ctrlKey;
+  }
+}
