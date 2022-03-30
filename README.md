@@ -17,7 +17,7 @@ Render well plates in react.
 
 </h3>
 
-## [Storybook](https://zakodium.github.io/react-well-plates/)
+## [Storybook](https://zakodium-oss.github.io/react-well-plates/)
 
 ## Installation
 

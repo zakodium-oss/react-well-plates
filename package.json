@@ -14,56 +14,49 @@
     "build:ts": "tsc && tsc -p tsconfig.es.json",
     "check-types": "tsc --noEmit",
     "clean": "rimraf lib lib-es",
-    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
     "dev": "start-storybook --no-dll -p 6006",
     "build-storybook": "build-storybook --no-dll",
     "eslint": "eslint --ext ts,tsx src stories",
     "eslint-fix": "npm run eslint -- --fix",
-    "test": "npm run eslint && npm run check-types"
+    "prettier": "prettier --check .",
+    "prettier-write": "prettier --write .",
+    "test": "npm run eslint && npm run check-types && npm run prettier"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zakodium/react-well-plates.git"
+    "url": "git+https://github.com/zakodium-oss/react-well-plates.git"
   },
   "keywords": [],
   "author": "Daniel Kostro",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zakodium/react-well-plates/issues"
+    "url": "https://github.com/zakodium-oss/react-well-plates/issues"
   },
-  "homepage": "https://github.com/zakodium/react-well-plates#readme",
+  "homepage": "https://github.com/zakodium-oss/react-well-plates#readme",
   "peerDependencies": {
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
-  "prettier": {
-    "trailingComma": "all",
-    "arrowParens": "always",
-    "singleQuote": true
-  },
   "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "@storybook/addon-essentials": "^6.1.21",
-    "@storybook/addon-storysource": "^6.1.21",
-    "@storybook/addon-links": "^6.1.21",
-    "@storybook/react": "^6.1.21",
-    "@types/react": "^17.0.2",
-    "@zakodium/eslint-config": "^3.0.1",
-    "awesome-typescript-loader": "^5.2.1",
-    "babel-loader": "^8.2.2",
-    "eslint": "^7.21.0",
-    "prettier": "^2.2.1",
-    "react": "^17.0.0",
-    "react-docgen-typescript-loader": "^3.7.2",
-    "react-dom": "^17.0.0",
+    "@babel/core": "^7.17.8",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-storysource": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/react": "^6.4.19",
+    "@types/react": "^17.0.43",
+    "@zakodium/eslint-config": "^5.1.1",
+    "eslint": "^8.12.0",
+    "prettier": "^2.6.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-is": "^17.0.1",
-    "typescript": "^4.2.2"
+    "typescript": "^4.6.3"
   },
   "dependencies": {
-    "well-plates": "^6.0.0"
+    "well-plates": "^6.0.3"
   },
   "volta": {
-    "node": "15.5.1",
-    "npm": "6.14.11"
+    "node": "16.14.2"
   }
 }
