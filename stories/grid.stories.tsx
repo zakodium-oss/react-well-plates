@@ -87,7 +87,7 @@ export function CustomGridWellPlate() {
           return '';
         }
       }}
-      text={({ index }) => {
+      renderText={({ index }) => {
         if (index === 0) {
           return undefined;
         } else if (index === 1) {
@@ -122,7 +122,7 @@ export function CustomWellPicker() {
       rows={8}
       columns={12}
       wellSize={50}
-      text={({ index, label }) => {
+      renderText={({ index, label }) => {
         return (
           <div style={{ fontSize: 12 }}>
             <div>{label}</div>

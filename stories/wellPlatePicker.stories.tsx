@@ -37,7 +37,7 @@ export function CustomWellPicker() {
       rows={8}
       columns={12}
       wellSize={50}
-      text={({ index, label }) => {
+      renderText={({ index, label }) => {
         return (
           <div style={{ fontSize: 12 }}>
             <div>{label}</div>

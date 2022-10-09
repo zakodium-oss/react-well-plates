@@ -34,7 +34,7 @@ export interface IWellPlateProps extends IWellPlateCommonProps {
   displayAsGrid?: boolean;
 
   wellClassName?: (cell: Cell) => string | undefined;
-  text?: (cell: Cell) => ReactNode;
+  renderText?: (cell: Cell) => ReactNode;
   wellStyle?: (cell: Cell) => CSSProperties;
 
   headerClassName?: (cell: HeaderCell) => string | undefined;
@@ -85,7 +85,7 @@ export const WellPlate: FunctionComponent<IWellPlateProps> = (props) => {
     onEnter,
     wellStyle,
     wellClassName,
-    text,
+    renderText: text,
     headerStyle,
     ...otherProps
   } = props;

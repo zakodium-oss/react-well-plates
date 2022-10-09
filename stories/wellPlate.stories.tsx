@@ -60,9 +60,9 @@ export function CustomWellPlate() {
           return '';
         }
       }}
-      text={({ index }) => {
+      renderText={({ index }) => {
         if (index === 0) {
-          return;
+          return null;
         } else if (index === 1) {
           return '';
         } else if (index === 2) {

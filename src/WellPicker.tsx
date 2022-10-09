@@ -61,7 +61,7 @@ export interface IWellPickerProps {
   onChange: (value: number[], label: string[]) => void;
   style?: StyleParam;
   className?: ClassNameParam;
-  text?: (cell: PickCell) => ReactNode;
+  renderText?: (cell: PickCell) => ReactNode;
   rangeSelectionMode?: RangeSelectionMode;
   pickMode?: boolean;
 }
@@ -71,7 +71,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   columns,
   format,
   value,
-  text = ({ label }) => label,
+  renderText: text = ({ label }) => label,
   disabled = [],
   onChange,
   style = defaultWellPickerStyle,
@@ -176,7 +176,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           newValue.map((val) => wellPlate.getPosition(val, 'formatted')),
         );
       } else if (disabledSet.has(well)) {
-        return;
+        // ignore
       } else {
         const newValue = [...valueSet, well];
         onChange(
@@ -229,7 +229,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           booked: bookedSet.has(index),
           disabled: disabledSet.has(index),
           selected: valueSet.has(index),
-          index: index,
+          index,
           label: wellPlate.getPosition(index, 'formatted'),
           position: wellPlate.getPosition(index, 'row_column'),
           wellPlate,
