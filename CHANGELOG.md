@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.0](https://github.com/zakodium-oss/react-well-plates/compare/v5.0.0...v6.0.0) (2022-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename text prop to renderText
+
+### Miscellaneous Chores
+
+* upgrade dependencies ([#24](https://github.com/zakodium-oss/react-well-plates/issues/24)) ([ea85490](https://github.com/zakodium-oss/react-well-plates/commit/ea8549012921ef3cb5580bfa12e1649fab4b3fba))
+
 ## [5.0.0](https://www.github.com/zakodium/react-well-plates/compare/v4.0.0...v5.0.0) (2021-03-22)
 
 
