@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.0.0](https://github.com/zakodium-oss/react-well-plates/compare/v6.0.0...v7.0.0) (2023-08-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* change rangeSelectionMode to be an union type instead of enum
+
+### Miscellaneous Chores
+
+* update deps ([d9d75c4](https://github.com/zakodium-oss/react-well-plates/commit/d9d75c42284b36c33076991a6aa77279ff715c2a))
+
 ## [6.0.0](https://github.com/zakodium-oss/react-well-plates/compare/v5.0.0...v6.0.0) (2022-10-10)
 
 
