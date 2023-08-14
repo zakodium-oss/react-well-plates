@@ -17,7 +17,7 @@
     "prepack": "npm run build",
     "dev": "storybook dev",
     "build-storybook": "storybook build",
-    "eslint": "eslint --ext ts,tsx src stories",
+    "eslint": "eslint --ext ts,tsx src",
     "eslint-fix": "npm run eslint -- --fix",
     "prettier": "prettier --check .",
     "prettier-write": "prettier --write .",

@@ -12,12 +12,7 @@ import { WellPlate, PositionFormat, SubsetMode } from 'well-plates';
 import { Cell } from './WellPlate';
 import { WellPlateInternal } from './util/WellPlateInternal';
 
-export enum RangeSelectionMode {
-  columns = 'columns',
-  rows = 'rows',
-  zone = 'zone',
-  off = 'off',
-}
+export type RangeSelectionMode = 'zone' | 'columns' | 'rows' | 'off';
 
 interface PickCell extends Cell {
   disabled: boolean;
@@ -76,7 +71,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   onChange,
   style = defaultWellPickerStyle,
   className,
-  rangeSelectionMode = RangeSelectionMode.zone,
+  rangeSelectionMode = 'zone',
   pickMode = true,
   ...wellPlateProps
 }) => {
@@ -98,7 +93,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
     (start: number, end: number) => {
       let range: number[];
       switch (rangeSelectionMode) {
-        case RangeSelectionMode.zone: {
+        case 'zone': {
           range = wellPlate.getPositionSubset(
             start,
             end,
@@ -107,12 +102,12 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           );
           break;
         }
-        case RangeSelectionMode.columns:
-        case RangeSelectionMode.rows: {
+        case 'columns':
+        case 'rows': {
           range = wellPlate.getPositionSubset(
             start,
             end,
-            rangeSelectionMode === RangeSelectionMode.columns
+            rangeSelectionMode === 'columns'
               ? SubsetMode.columns
               : SubsetMode.rows,
             'index',
@@ -120,7 +115,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
 
           break;
         }
-        case RangeSelectionMode.off: {
+        case 'off': {
           return;
         }
         default: {

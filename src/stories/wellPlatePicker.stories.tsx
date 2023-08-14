@@ -35,7 +35,7 @@ export function CustomWellPicker() {
       }}
       value={[14]}
       disabled={[5, 20]}
-      rangeSelectionMode={RangeSelectionMode.zone}
+      rangeSelectionMode="zone"
       style={({ index, wellPlate, disabled, booked, selected }) => {
         const position = wellPlate.getPosition(index, 'row_column');
         const styles: CSSProperties = {};
