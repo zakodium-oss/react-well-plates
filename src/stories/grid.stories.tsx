@@ -1,11 +1,7 @@
 import { Meta } from '@storybook/react';
 import React, { CSSProperties, useState } from 'react';
 
-import {
-  IWellPickerProps,
-  MultiWellPicker,
-  WellPlate,
-} from '../index';
+import { IWellPickerProps, MultiWellPicker, WellPlate } from '../index';
 
 export default {
   title: 'Example/GridWellPlate',

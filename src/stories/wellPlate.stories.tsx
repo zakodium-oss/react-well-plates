@@ -13,7 +13,7 @@ export default {
 } as Meta;
 
 export function Control(props: IWellPlateProps) {
-  return <WellPlate {...props}  />;
+  return <WellPlate {...props} />;
 }
 
 export function SmallWellPlate() {

@@ -8,7 +8,7 @@ export default {
   component: MultiWellPicker,
   args: {
     rows: 8,
-    columns:12,
+    columns: 12,
     value: [8],
     disabled: [2],
   },
