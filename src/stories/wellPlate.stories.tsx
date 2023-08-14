@@ -1,25 +1,19 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
 
-import { WellPlate, IWellPlateProps } from '../src/index';
+import { WellPlate, IWellPlateProps } from '../index';
 
 export default {
   title: 'Example/WellPlate',
   component: WellPlate,
-  argTypes: {
-    rows: {
-      defaultValue: 8,
-      control: 'number',
-    },
-    columns: {
-      defaultValue: 12,
-      control: 'number',
-    },
+  args: {
+    rows: 8,
+    columns: 12,
   },
 } as Meta;
 
 export function Control(props: IWellPlateProps) {
-  return <WellPlate {...props} />;
+  return <WellPlate {...props}  />;
 }
 
 export function SmallWellPlate() {

@@ -15,13 +15,14 @@
     "check-types": "tsc --noEmit",
     "clean": "rimraf lib lib-es",
     "prepack": "npm run build",
-    "dev": "start-storybook --no-dll -p 6006",
-    "build-storybook": "build-storybook --no-dll",
+    "dev": "storybook dev",
+    "build-storybook": "storybook build",
     "eslint": "eslint --ext ts,tsx src stories",
     "eslint-fix": "npm run eslint -- --fix",
     "prettier": "prettier --check .",
     "prettier-write": "prettier --write .",
-    "test": "npm run eslint && npm run check-types && npm run prettier"
+    "test": "npm run eslint && npm run check-types && npm run prettier",
+    "storybook": "storybook dev -p 6006"
   },
   "repository": {
     "type": "git",
@@ -39,17 +40,21 @@
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^6.5.12",
-    "@storybook/addon-links": "^6.5.12",
-    "@storybook/addon-storysource": "^6.5.12",
-    "@storybook/react": "^6.5.12",
+    "@storybook/addon-essentials": "^7.2.3",
+    "@storybook/addon-links": "^7.2.3",
+    "@storybook/addon-storysource": "^7.2.3",
+    "@storybook/blocks": "^7.2.3",
+    "@storybook/react": "^7.2.3",
+    "@storybook/react-vite": "^7.2.3",
+    "@storybook/testing-library": "^0.2.0",
     "@types/react": "^17.0.50",
     "@zakodium/eslint-config": "^6.0.0",
-    "eslint": "^8.25.0",
-    "prettier": "^2.7.1",
+    "eslint": "^8.47.0",
+    "prettier": "^3.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typescript": "^4.8.4"
+    "storybook": "^7.2.3",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "well-plates": "^6.0.3"

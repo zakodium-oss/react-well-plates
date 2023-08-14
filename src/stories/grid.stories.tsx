@@ -6,7 +6,7 @@ import {
   MultiWellPicker,
   RangeSelectionMode,
   WellPlate,
-} from '../src/index';
+} from '../index';
 
 export default {
   title: 'Example/GridWellPlate',

@@ -1,29 +1,17 @@
 import { Meta } from '@storybook/react';
 import React, { CSSProperties, useState } from 'react';
 
-import { RangeSelectionMode } from '../src/WellPicker';
-import { IWellPickerProps, MultiWellPicker } from '../src/index';
+import { RangeSelectionMode } from '../WellPicker';
+import { IWellPickerProps, MultiWellPicker } from '../index';
 
 export default {
   title: 'Example/MultiWellPicker',
   component: MultiWellPicker,
-  argTypes: {
-    rows: {
-      defaultValue: 8,
-      control: 'number',
-    },
-    columns: {
-      defaultValue: 12,
-      control: 'number',
-    },
-    value: {
-      defaultValue: [8],
-      control: 'array',
-    },
-    disabled: {
-      defaultValue: [2],
-      control: 'array',
-    },
+  args: {
+    rows: 8,
+    columns:12,
+    value: [8],
+    disabled: [2],
   },
 } as Meta;
 
