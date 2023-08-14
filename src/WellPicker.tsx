@@ -51,8 +51,8 @@ export interface IWellPickerProps {
   rows: number;
   columns: number;
   format?: PositionFormat;
-  value: (number | string)[];
-  disabled?: (number | string)[];
+  value: Array<number | string>;
+  disabled?: Array<number | string>;
   onChange: (value: number[], label: string[]) => void;
   style?: StyleParam;
   className?: ClassNameParam;
@@ -133,7 +133,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       // if there is no selection, do nothing
       if (bookedSet.size === 0) return;
       const newValue = [];
-      for (let bookedEl of bookedSet) {
+      for (const bookedEl of bookedSet) {
         if (!disabledSet.has(wellPlate.getPosition(bookedEl, 'index'))) {
           if (toggle) {
             if (!valueSet.has(bookedEl)) {
@@ -146,7 +146,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       }
 
       if (toggle) {
-        for (let selected of valueSet) {
+        for (const selected of valueSet) {
           if (!bookedSet.has(selected)) {
             newValue.push(selected);
           }

@@ -4,7 +4,6 @@ import React, { CSSProperties, useState } from 'react';
 import {
   IWellPickerProps,
   MultiWellPicker,
-  RangeSelectionMode,
   WellPlate,
 } from '../index';
 
