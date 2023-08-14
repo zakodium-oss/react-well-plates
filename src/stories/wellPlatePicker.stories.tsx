@@ -1,29 +1,16 @@
 import { Meta } from '@storybook/react';
 import React, { CSSProperties, useState } from 'react';
 
-import { RangeSelectionMode } from '../src/WellPicker';
-import { IWellPickerProps, MultiWellPicker } from '../src/index';
+import { IWellPickerProps, MultiWellPicker } from '../index';
 
 export default {
   title: 'Example/MultiWellPicker',
   component: MultiWellPicker,
-  argTypes: {
-    rows: {
-      defaultValue: 8,
-      control: 'number',
-    },
-    columns: {
-      defaultValue: 12,
-      control: 'number',
-    },
-    value: {
-      defaultValue: [8],
-      control: 'array',
-    },
-    disabled: {
-      defaultValue: [2],
-      control: 'array',
-    },
+  args: {
+    rows: 8,
+    columns: 12,
+    value: [8],
+    disabled: [2],
   },
 } as Meta;
 
@@ -47,7 +34,7 @@ export function CustomWellPicker() {
       }}
       value={[14]}
       disabled={[5, 20]}
-      rangeSelectionMode={RangeSelectionMode.zone}
+      rangeSelectionMode="zone"
       style={({ index, wellPlate, disabled, booked, selected }) => {
         const position = wellPlate.getPosition(index, 'row_column');
         const styles: CSSProperties = {};

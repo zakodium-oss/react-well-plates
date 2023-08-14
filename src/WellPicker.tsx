@@ -12,12 +12,7 @@ import { WellPlate, PositionFormat, SubsetMode } from 'well-plates';
 import { Cell } from './WellPlate';
 import { WellPlateInternal } from './util/WellPlateInternal';
 
-export enum RangeSelectionMode {
-  columns = 'columns',
-  rows = 'rows',
-  zone = 'zone',
-  off = 'off',
-}
+export type RangeSelectionMode = 'zone' | 'columns' | 'rows' | 'off';
 
 interface PickCell extends Cell {
   disabled: boolean;
@@ -56,8 +51,8 @@ export interface IWellPickerProps {
   rows: number;
   columns: number;
   format?: PositionFormat;
-  value: (number | string)[];
-  disabled?: (number | string)[];
+  value: Array<number | string>;
+  disabled?: Array<number | string>;
   onChange: (value: number[], label: string[]) => void;
   style?: StyleParam;
   className?: ClassNameParam;
@@ -76,7 +71,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
   onChange,
   style = defaultWellPickerStyle,
   className,
-  rangeSelectionMode = RangeSelectionMode.zone,
+  rangeSelectionMode = 'zone',
   pickMode = true,
   ...wellPlateProps
 }) => {
@@ -98,7 +93,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
     (start: number, end: number) => {
       let range: number[];
       switch (rangeSelectionMode) {
-        case RangeSelectionMode.zone: {
+        case 'zone': {
           range = wellPlate.getPositionSubset(
             start,
             end,
@@ -107,12 +102,12 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
           );
           break;
         }
-        case RangeSelectionMode.columns:
-        case RangeSelectionMode.rows: {
+        case 'columns':
+        case 'rows': {
           range = wellPlate.getPositionSubset(
             start,
             end,
-            rangeSelectionMode === RangeSelectionMode.columns
+            rangeSelectionMode === 'columns'
               ? SubsetMode.columns
               : SubsetMode.rows,
             'index',
@@ -120,7 +115,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
 
           break;
         }
-        case RangeSelectionMode.off: {
+        case 'off': {
           return;
         }
         default: {
@@ -138,7 +133,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       // if there is no selection, do nothing
       if (bookedSet.size === 0) return;
       const newValue = [];
-      for (let bookedEl of bookedSet) {
+      for (const bookedEl of bookedSet) {
         if (!disabledSet.has(wellPlate.getPosition(bookedEl, 'index'))) {
           if (toggle) {
             if (!valueSet.has(bookedEl)) {
@@ -151,7 +146,7 @@ export const MultiWellPicker: FunctionComponent<IWellPickerProps> = ({
       }
 
       if (toggle) {
-        for (let selected of valueSet) {
+        for (const selected of valueSet) {
           if (!bookedSet.has(selected)) {
             newValue.push(selected);
           }

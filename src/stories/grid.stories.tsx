@@ -1,12 +1,7 @@
 import { Meta } from '@storybook/react';
 import React, { CSSProperties, useState } from 'react';
 
-import {
-  IWellPickerProps,
-  MultiWellPicker,
-  RangeSelectionMode,
-  WellPlate,
-} from '../src/index';
+import { IWellPickerProps, MultiWellPicker, WellPlate } from '../index';
 
 export default {
   title: 'Example/GridWellPlate',
@@ -132,7 +127,7 @@ export function CustomWellPicker() {
       }}
       value={[14]}
       disabled={[5, 20]}
-      rangeSelectionMode={RangeSelectionMode.zone}
+      rangeSelectionMode="zone"
       style={({ index, wellPlate, disabled, booked, selected }) => {
         const position = wellPlate.getPosition(index, 'row_column');
         const styles: CSSProperties = {};
