@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.1](https://github.com/zakodium-oss/react-well-plates/compare/v7.0.0...v7.0.1) (2023-08-15)
+
+
+### Bug Fixes
+
+* correct published npm files ([570bb70](https://github.com/zakodium-oss/react-well-plates/commit/570bb70a88dee305e7365595f105b8b24cb11e62))
+
 ## [7.0.0](https://github.com/zakodium-oss/react-well-plates/compare/v6.0.0...v7.0.0) (2023-08-14)
 
 
