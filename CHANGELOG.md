@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.2](https://github.com/zakodium-oss/react-well-plates/compare/v7.0.1...v7.0.2) (2023-08-15)
+
+
+### Bug Fixes
+
+* **build:** do not publish stories ([b56a8c5](https://github.com/zakodium-oss/react-well-plates/commit/b56a8c5431cf24e90ef1d9b1715ec68802a07396))
+
 ## [7.0.1](https://github.com/zakodium-oss/react-well-plates/compare/v7.0.0...v7.0.1) (2023-08-15)
 
 
