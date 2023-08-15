@@ -13,6 +13,6 @@
     "strict": false,
     "target": "es2019"
   },
-  "include": ["src/**/*", "src/stories/**/*"],
+  "include": ["src/**/*", "stories/**/*"],
   "exclude": ["node_modules", "**/__tests__"]
 }
