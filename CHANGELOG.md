@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.3](https://github.com/zakodium-oss/react-well-plates/compare/v7.0.2...v7.0.3) (2023-11-01)
+
+
+### Bug Fixes
+
+* publish src folder for react-scripts source maps ([71d9316](https://github.com/zakodium-oss/react-well-plates/commit/71d9316924014dea6cf56caf61f56a6608dfaa4e))
+
 ## [7.0.2](https://github.com/zakodium-oss/react-well-plates/compare/v7.0.1...v7.0.2) (2023-08-15)
 
 
