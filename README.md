@@ -19,7 +19,7 @@ Render well plates in react.
 
 ## Storybook
 
-[Go to the storybook](https://zakodium-oss.github.io/react-well-plates/) to view usage examples (including the source) of the component.
+[Go to the storybook](https://react-well-plates.pages.dev/) to view usage examples (including the source) of the component.
 
 ## Installation
 

@@ -1,5 +1,6 @@
 import { Meta } from '@storybook/react';
 import React from 'react';
+
 import { IWellPlateProps, WellPlate } from '../src';
 
 export default {

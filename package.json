@@ -18,7 +18,7 @@
     "prepack": "npm run build",
     "dev": "storybook dev",
     "build-storybook": "storybook build",
-    "eslint": "eslint --ext ts,tsx src",
+    "eslint": "eslint .",
     "eslint-fix": "npm run eslint -- --fix",
     "prettier": "prettier --check .",
     "prettier-write": "prettier --write .",
@@ -41,26 +41,26 @@
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.2.3",
-    "@storybook/addon-links": "^7.2.3",
-    "@storybook/addon-storysource": "^7.2.3",
-    "@storybook/blocks": "^7.2.3",
-    "@storybook/react": "^7.2.3",
-    "@storybook/react-vite": "^7.2.3",
-    "@storybook/testing-library": "^0.2.0",
+    "@storybook/addon-essentials": "^8.2.8",
+    "@storybook/addon-links": "^8.2.8",
+    "@storybook/addon-storysource": "^8.2.8",
+    "@storybook/blocks": "^8.2.8",
+    "@storybook/react": "^8.2.8",
+    "@storybook/react-vite": "^8.2.8",
+    "@storybook/test": "^8.2.8",
     "@types/react": "^17.0.50",
     "eslint": "^8.47.0",
-    "eslint-config-zakodium": "^8.0.2",
-    "prettier": "^3.0.1",
+    "eslint-config-zakodium": "^12.0.0",
+    "prettier": "^3.3.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "storybook": "^7.2.3",
-    "typescript": "^5.1.6"
+    "storybook": "^8.2.8",
+    "typescript": "^5.5.4"
   },
   "dependencies": {
     "well-plates": "^6.0.3"
   },
   "volta": {
-    "node": "18.17.1"
+    "node": "20.16.0"
   }
 }

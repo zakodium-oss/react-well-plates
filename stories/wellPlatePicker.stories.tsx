@@ -1,5 +1,6 @@
 import { Meta } from '@storybook/react';
 import React, { CSSProperties, useState } from 'react';
+
 import { IWellPickerProps, MultiWellPicker } from '../src';
 
 export default {
